@@ -54,6 +54,8 @@ public class AuthorController {
     @PostMapping("/add")
     public void addNewAuthor(@RequestBody AuthorDTO authorDTO){
         authorService.createAuthor(AuthorMapper.mapAuthorFromDTO(authorDTO));
+
+
     }
 
     @PutMapping("/change/{id}")
