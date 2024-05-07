@@ -43,6 +43,7 @@ public class AuthorController {
     @GetMapping("/{id}")
     public AuthorDTO getAuthorById(@RequestParam(name = "id") Integer id){
         return AuthorMapper.mapAuthorToDTO(authorService.getAuthorById(id));
+
     }
 
     @DeleteMapping("/delete/{id}")
