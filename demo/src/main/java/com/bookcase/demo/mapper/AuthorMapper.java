@@ -34,7 +34,6 @@ public class AuthorMapper {
                 .sex(author.getSex())
                 .age(author.getAge())
                 .alive(author.getAlive())
-                //potrzeba zmapować book w author, bo inaczej zwróci samych autorów
                 .bookDTOS(BookMapper.mapBookToDTOList(author.getBooks()))
                 .build();
     }

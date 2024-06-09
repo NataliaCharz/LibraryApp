@@ -40,12 +40,6 @@ public class BookMapper {
     }
 
     public static BookDTO mapBookToDTO(Book book){
-//        BookDTO bookDTO = new BookDTO();
-//        bookDTO.setTitle(book.getTitle());
-//        bookDTO.setPages(book.getPages());
-//        bookDTO.setCategory(book.getCategory());
-//        bookDTO.setReadBook(book.getReadBook());
-//        return bookDTO;
         return BookDTO.builder()
                 .title(book.getTitle())
                 .pages(book.getPages())

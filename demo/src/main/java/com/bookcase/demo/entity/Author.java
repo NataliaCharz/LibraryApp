@@ -38,9 +38,7 @@ public class Author {
     @Column(name="IS_ALIVE")
     private Boolean alive;
 
-    @OneToMany //(orphanRemoval = true) -  its usage is to delete orphaned entities from the database.
-    // An entity that is no longer attached to its parent is the definition of being an orphan.
-            (cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn (name="authorId", updatable = false, insertable = false)
     private List<Book> books;
 

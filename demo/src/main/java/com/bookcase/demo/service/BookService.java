@@ -78,10 +78,6 @@ public class BookService {
             throw new BookNotFoundException();
         }
         Book bookToUpdate = bookToUpdateOptional.get();
-//        bookToUpdate.setTitle(bookDTO.getTitle());
-//        bookToUpdate.setPages(bookDTO.getPages());
-//        bookToUpdate.setCategory(bookDTO.getCategory());
-//        bookToUpdate.setReadBook(bookDTO.getReadBook());
         bookToUpdate=BookMapper.mapBookFromDTO(bookDTO);
         this.bookRepository.save(bookToUpdate);
         return BookMapper.mapBookToDTO(bookToUpdate);

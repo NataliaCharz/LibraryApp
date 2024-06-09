@@ -21,7 +21,6 @@ public class Book {
     @SequenceGenerator(name="book_seq", sequenceName="book_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE,generator = "book_seq")
     private int id;
-    //int nie może być nullem, brak przypisania: 0; Integer może być nullem (brak przypisania "NULL")
     private Integer authorId;
 
     @Column(name="TITLE", nullable = false)

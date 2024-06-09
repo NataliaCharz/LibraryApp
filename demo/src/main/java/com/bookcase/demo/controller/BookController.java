@@ -29,8 +29,6 @@ public class BookController {
 
     @GetMapping("/all")
     public List<BookDTO> getBooksByPage(@RequestParam (name = "pageNum", required = false) Integer pageNum, Sort.Direction sort){
-//        int pageNumber = pageNum >=0 ? pageNum : 0;
-//        return BookMapper.mapBookToDTOList(bookService.getBooksByPage(pageNumber, sort).toList());
         if(pageNum == null){
             return BookMapper.mapBookToDTOList(bookService.getAllBooks());
         } else {
@@ -40,7 +38,6 @@ public class BookController {
 
 
     @GetMapping("/{id}")
-    //@ResponseBody kontroler z adnotacją @RestController automatycznie to robi
     public BookDTO getBookById(@PathVariable(name = "id") Integer id) {
         return BookMapper.mapBookToDTO(bookService.getById(id));
     }

@@ -7,7 +7,6 @@ import com.bookcase.demo.mapper.AuthorMapper;
 import com.bookcase.demo.model.AuthorDTO;
 import com.bookcase.demo.repository.AuthorRepository;
 import com.bookcase.demo.repository.BookRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,11 +40,6 @@ public class AuthorService {
         return allAuthors;
     }
 
-//    public List<Author> getAllAuthorsWithBooks() {
-//        List<Author> allAuthors = this.authorRepository.findAll();
-//        return allAuthors;
-//    }
-
     private List<Book> extractBook(List<Book> booksByAuthor, int id) {
         return booksByAuthor.stream()
                 .filter(book -> book.getAuthorId() == id)
@@ -69,13 +63,6 @@ public class AuthorService {
     public Author getAuthorById(Integer id) throws AuthorNotFoundException {
         return this.authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException("Author not found on::" + id));
-
-        /*  if (findAuthorById.isPresent()){
-            log.info("There is no author with id: {}", id);
-            throw new AuthorNotFoundException();
-        } else {
-            return findAuthorById.get();
-        } */
     }
 
     public void deleteAuthor(Integer id) {
@@ -94,8 +81,4 @@ public class AuthorService {
         this.authorRepository.save(authorToUpdate);
         return AuthorMapper.mapAuthorToDTO(authorToUpdate);
     }
-    //Cannot invoke "java.util.List.stream()" because "books" is null
-    //	at com.bookcase.demo.mapper.BookMapper.mapBookToDTOList(BookMapper.java:37) ~[classes/:na]
-    //	at com.bookcase.demo.mapper.AuthorMapper.mapAuthorToDTO(AuthorMapper.java:37) ~[classes/:na]
-    //	at com.bookcase.demo.service.AuthorService.updateAuthor(AuthorService.java:95) ~[classes/:na]
 }

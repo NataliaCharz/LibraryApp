@@ -19,8 +19,6 @@ public class AuthorController {
 
     @GetMapping("/all")
     public List<AuthorDTO> getAuthors(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort) {
-//        int pageNumber = pageNum >= 0 ? pageNum : 0;
-//        return AuthorMapper.mapAuthorToDTOList(authorService.getAuthorsByPage(pageNumber, sort).toList());
         if (pageNum == null) {
             return AuthorMapper.mapAuthorToDTOList(authorService.getAllAuthors());
         } else {
@@ -33,17 +31,11 @@ public class AuthorController {
         int pageNumber = pageNum != null ? pageNum : 0;
         Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         return AuthorMapper.mapAuthorToDTOList(authorService.getAuthorsWithBooksByPage(pageNumber, sortDirection).toList());
-//        if (pageNum == null) {
-//            return AuthorMapper.mapAuthorToDTOList(authorService.getAllAuthorsWithBooks());
-//        } else {
-//            return AuthorMapper.mapAuthorToDTOList(authorService.getAuthorsWithBooksByPage(pageNum, sort).toList());
-//        }
     }
 
     @GetMapping("/{id}")
     public AuthorDTO getAuthorById(@RequestParam(name = "id") Integer id){
         return AuthorMapper.mapAuthorToDTO(authorService.getAuthorById(id));
-
     }
 
     @DeleteMapping("/delete/{id}")
