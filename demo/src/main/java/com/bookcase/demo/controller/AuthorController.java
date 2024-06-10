@@ -41,17 +41,17 @@ public class AuthorController {
         return AuthorMapper.mapAuthorWithBookToDTO(authorService.getAuthorById(id));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteAuthorById(@RequestParam(name = "id") Integer id) {
         authorService.deleteAuthor(id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public void addNewAuthor(@RequestBody AuthorDTO authorDTO) {
         authorService.createAuthor(AuthorMapper.mapAuthorWithBookFromDTO(authorDTO));
     }
 
-    @PutMapping("/change/{id}")
+    @PutMapping("/{id}")
     public AuthorDTO updateAuthorById(@RequestParam(name = "id") Integer id, @RequestBody AuthorDTO authorDTO) {
         return authorService.updateAuthor(id, authorDTO);
     }
