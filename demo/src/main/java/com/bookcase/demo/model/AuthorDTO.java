@@ -1,13 +1,11 @@
 package com.bookcase.demo.model;
 
-import com.bookcase.demo.entity.Book;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -21,6 +19,7 @@ public class AuthorDTO {
     private AuthorSex sex;
     private Integer age;
     private Boolean alive;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<BookDTO> bookDTOS;
 
 }

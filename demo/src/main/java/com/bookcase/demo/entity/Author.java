@@ -38,8 +38,9 @@ public class Author {
     @Column(name="IS_ALIVE")
     private Boolean alive;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn (name="authorId", updatable = false, insertable = false)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "author")
+//    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+//    @JoinColumn (name="authorId", updatable = false, insertable = false)
     private List<Book> books;
 
 }

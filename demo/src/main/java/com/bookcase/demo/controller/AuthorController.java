@@ -1,6 +1,5 @@
 package com.bookcase.demo.controller;
 
-import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.mapper.AuthorMapper;
 import com.bookcase.demo.model.AuthorDTO;
 import com.bookcase.demo.service.AuthorService;
@@ -12,12 +11,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/author")
+@RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
 
-    @GetMapping("/all")
+    //wszyscy autorzy bez stron i ze stronami
+    @GetMapping()
     public List<AuthorDTO> getAuthors(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort) {
         if (pageNum == null) {
             return AuthorMapper.mapAuthorToDTOList(authorService.getAllAuthors());
@@ -26,30 +26,33 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("/all/books")
+    //wszyscy autorzy z ksiazkami bez stron i ze stronami
+    @GetMapping("/books")
     public List<AuthorDTO> getAuthorsWithBooks(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort) {
-        int pageNumber = pageNum != null ? pageNum : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
-        return AuthorMapper.mapAuthorToDTOList(authorService.getAuthorsWithBooksByPage(pageNumber, sortDirection).toList());
+        if (pageNum == null) {
+            return AuthorMapper.mapAuthorWithBookToDTOList(authorService.getAuthorsWithBooks());
+        } else {
+            return AuthorMapper.mapAuthorWithBookToDTOList(authorService.getAuthorsWithBooksByPage(pageNum, sort).toList());
+        }
     }
 
     @GetMapping("/{id}")
-    public AuthorDTO getAuthorById(@RequestParam(name = "id") Integer id){
-        return AuthorMapper.mapAuthorToDTO(authorService.getAuthorById(id));
+    public AuthorDTO getAuthorById(@RequestParam(name = "id") Integer id) {
+        return AuthorMapper.mapAuthorWithBookToDTO(authorService.getAuthorById(id));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteAuthorById(@RequestParam(name = "id") Integer id){
+    public void deleteAuthorById(@RequestParam(name = "id") Integer id) {
         authorService.deleteAuthor(id);
     }
 
     @PostMapping("/add")
-    public void addNewAuthor(@RequestBody AuthorDTO authorDTO){
-        authorService.createAuthor(AuthorMapper.mapAuthorFromDTO(authorDTO));
+    public void addNewAuthor(@RequestBody AuthorDTO authorDTO) {
+        authorService.createAuthor(AuthorMapper.mapAuthorWithBookFromDTO(authorDTO));
     }
 
     @PutMapping("/change/{id}")
-    public AuthorDTO updateAuthorById(@RequestParam(name = "id") Integer id, @RequestBody AuthorDTO authorDTO){
+    public AuthorDTO updateAuthorById(@RequestParam(name = "id") Integer id, @RequestBody AuthorDTO authorDTO) {
         return authorService.updateAuthor(id, authorDTO);
     }
 }

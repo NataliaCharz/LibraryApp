@@ -26,38 +26,45 @@ public class AuthorService {
     private final BookRepository bookRepository;
     private static final int page_Size = 20;
 
+    //wszyscy autorzy
     public List<Author> getAllAuthors() {
         return this.authorRepository.findAll();
     }
-
-    public List<Author> getAllAuthorsWithBooks() {
-        List<Author> allAuthors = this.authorRepository.findAll();
-        List<Integer> ids = allAuthors.stream()
-                .map(Author::getId)
-                .collect(Collectors.toList());
-        List<Book> booksByAuthor = bookRepository.findAllByAuthorIdIn(ids);
-        allAuthors.forEach(author -> author.setBooks(extractBook(booksByAuthor, author.getId())));
-        return allAuthors;
-    }
-
-    private List<Book> extractBook(List<Book> booksByAuthor, int id) {
-        return booksByAuthor.stream()
-                .filter(book -> book.getAuthorId() == id)
-                .collect(Collectors.toList());
-    }
-
+    //wszyscy autorzy ze stronami
     public Page<Author> getAuthorsByPage(int page, Sort.Direction sort) {
         return this.authorRepository.findAll(PageRequest.of(page, page_Size, Sort.by(sort, "id")));
     }
 
+//    public List<Author> getAllWithBooks() {
+//        return this.authorRepository.findAll();
+////        return this.authorRepository.findAllWithBooks();
+////        List<Author> allAuthors = this.authorRepository.findAll();
+////        List<Integer> ids = allAuthors.stream()
+////                .map(Author::getId)
+////                .collect(Collectors.toList());
+////        List<Book> booksByAuthor = bookRepository.findAllByAuthorIdIn(ids);
+////        allAuthors.forEach(author -> author.setBooks(extractBook(booksByAuthor, author.getId())));
+////        return allAuthors;
+//    }
+
+//    private List<Book> extractBook(List<Book> booksByAuthor, int id) {
+//        return booksByAuthor.stream()
+//                .filter(book -> book.getAuthor().getId() == id)
+//                .collect(Collectors.toList());
+//    }
+    public List<Author> getAuthorsWithBooks(){
+        return this.authorRepository.findAllWithBooks();
+    }
+
     public Page<Author> getAuthorsWithBooksByPage(int page, Sort.Direction sort) {
-        Page<Author> allAuthors = this.authorRepository.findAll(PageRequest.of(page, page_Size, Sort.by(sort, "id")));
-        List<Integer> ids = allAuthors.stream()
-                .map(Author::getId)
-                .collect(Collectors.toList());
-        List<Book> booksByAuthor = bookRepository.findAllByAuthorIdIn(ids);
-        allAuthors.forEach(author -> author.setBooks(extractBook(booksByAuthor, author.getId())));
-        return (Page<Author>) allAuthors;
+        return this.authorRepository.findAllWithBooksByPage(PageRequest.of(page, page_Size, Sort.by(sort,"id")));
+//        Page<Author> allAuthors = this.authorRepository.findAll(PageRequest.of(page, page_Size, Sort.by(sort, "id")));
+//        List<Integer> ids = allAuthors.stream()
+//                .map(Author::getId)
+//                .collect(Collectors.toList());
+//        List<Book> booksByAuthor = bookRepository.findAllByAuthorIdIn(ids);
+//        allAuthors.forEach(author -> author.setBooks(extractBook(booksByAuthor, author.getId())));
+//        return (Page<Author>) allAuthors;
     }
 
     public Author getAuthorById(Integer id) throws AuthorNotFoundException {
@@ -77,8 +84,8 @@ public class AuthorService {
 
     public AuthorDTO updateAuthor(Integer id, AuthorDTO authorDTO) {
         Author authorToUpdate = getAuthorById(id);
-        authorToUpdate = AuthorMapper.mapAuthorFromDTO(authorDTO);
+        authorToUpdate = AuthorMapper.mapAuthorWithBookFromDTO(authorDTO);
         this.authorRepository.save(authorToUpdate);
-        return AuthorMapper.mapAuthorToDTO(authorToUpdate);
+        return AuthorMapper.mapAuthorWithBookToDTO(authorToUpdate);
     }
 }

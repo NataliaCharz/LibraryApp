@@ -21,7 +21,7 @@ public class Book {
     @SequenceGenerator(name="book_seq", sequenceName="book_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE,generator = "book_seq")
     private int id;
-    private Integer authorId;
+//    private Integer authorId;
 
     @Column(name="TITLE", nullable = false)
     private String title;
@@ -38,5 +38,9 @@ public class Book {
 
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="authorId")
+    private Author author;
 
 }
