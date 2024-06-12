@@ -17,9 +17,9 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
     @Query("""
             SELECT author FROM Author author
             LEFT JOIN FETCH author.books
-            
             """)
     List<Author> findAllWithBooks();
+
     @Query("""
             SELECT author FROM Author author
             LEFT JOIN FETCH author.books

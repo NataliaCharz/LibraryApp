@@ -19,12 +19,6 @@ public class BookMapper {
     }
 
     public static Book mapBookFromDTO(BookDTO bookDTO){
-//        Book book = new Book();
-//        book.setTitle(bookDTO.getTitle());
-//        book.setPages(bookDTO.getPages());
-//        book.setCategory(bookDTO.getCategory());
-//        book.setReadBook(bookDTO.getReadBook());
-//        return book;
         return Book.builder()
                 .title(bookDTO.getTitle())
                 .pages(bookDTO.getPages())
