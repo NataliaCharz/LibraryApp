@@ -1,12 +1,13 @@
 package com.bookcase.demo.service;
 
 import com.bookcase.demo.entity.Author;
-import com.bookcase.demo.entity.Book;
 import com.bookcase.demo.exception.AuthorNotFoundException;
 import com.bookcase.demo.mapper.AuthorMapper;
-import com.bookcase.demo.model.AuthorDTO;
+import com.bookcase.demo.mapper.AuthorMapperForPartialUpdates;
+import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.repository.AuthorRepository;
 import com.bookcase.demo.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
-    private final BookRepository bookRepository;
+    private final AuthorMapperForPartialUpdates authorMapperForPartialUpdates;
     private static final int page_Size = 20;
 
     //wszyscy autorzy
@@ -65,4 +65,17 @@ public class AuthorService {
         this.authorRepository.save(authorToUpdate);
         return AuthorMapper.mapAuthorWithBookToDTO(authorToUpdate);
     }
+
+    @Transactional
+    public AuthorDTO partialUpadateAuthor(Long id, AuthorDTO authorDTO) {
+        Author author = authorRepository.findById(id.intValue()).orElseThrow(AuthorNotFoundException::new);
+        log.info("Author before update: {}", author);
+
+        authorMapperForPartialUpdates.map(authorDTO, author);
+
+        log.info("Author after update: {}", author);
+
+        return AuthorMapper.mapAuthorToDTO(author);
+    }
+
 }

@@ -1,11 +1,8 @@
 package com.bookcase.demo.entity;
 
-import com.bookcase.demo.model.AuthorSex;
+import com.bookcase.demo.dto.AuthorSex;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Author {
 
     @Id
@@ -38,6 +36,7 @@ public class Author {
     @Column(name="IS_ALIVE")
     private Boolean alive;
 
+    @ToString.Exclude
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "author")
 //    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 //    @JoinColumn (name="authorId", updatable = false, insertable = false)

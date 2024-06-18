@@ -1,4 +1,4 @@
-package com.bookcase.demo.model;
+package com.bookcase.demo.dto;
 
 public enum AuthorSex {
     MALE,FEMALE;

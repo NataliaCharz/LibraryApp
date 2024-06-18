@@ -1,7 +1,7 @@
 package com.bookcase.demo.mapper;
 
 import com.bookcase.demo.entity.Author;
-import com.bookcase.demo.model.AuthorDTO;
+import com.bookcase.demo.dto.AuthorDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

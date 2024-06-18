@@ -1,6 +1,6 @@
 package com.bookcase.demo.entity;
 
-import com.bookcase.demo.model.BookCategory;
+import com.bookcase.demo.dto.BookCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

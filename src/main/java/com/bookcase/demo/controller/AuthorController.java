@@ -1,7 +1,7 @@
 package com.bookcase.demo.controller;
 
 import com.bookcase.demo.mapper.AuthorMapper;
-import com.bookcase.demo.model.AuthorDTO;
+import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -55,4 +55,11 @@ public class AuthorController {
     public AuthorDTO updateAuthorById(@RequestParam(name = "id") Integer id, @RequestBody AuthorDTO authorDTO) {
         return authorService.updateAuthor(id, authorDTO);
     }
+
+    @PatchMapping("/{id}")
+    public AuthorDTO partialUpdateAlive2(@RequestParam(name="id") Long id, @RequestBody AuthorDTO authorDTO){
+        return authorService.partialUpadateAuthor(id, authorDTO);
+    }
+
+
 }

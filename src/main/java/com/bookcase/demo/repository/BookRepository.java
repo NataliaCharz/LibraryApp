@@ -1,7 +1,7 @@
 package com.bookcase.demo.repository;
 
 import com.bookcase.demo.entity.Book;
-import com.bookcase.demo.model.BookCategory;
+import com.bookcase.demo.dto.BookCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

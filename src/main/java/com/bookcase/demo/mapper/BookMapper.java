@@ -1,7 +1,7 @@
 package com.bookcase.demo.mapper;
 
 import com.bookcase.demo.entity.Book;
-import com.bookcase.demo.model.BookDTO;
+import com.bookcase.demo.dto.BookDTO;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;

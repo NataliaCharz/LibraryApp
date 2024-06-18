@@ -1,8 +1,8 @@
 package com.bookcase.demo.controller;
 
 import com.bookcase.demo.mapper.BookMapper;
-import com.bookcase.demo.model.BookCategory;
-import com.bookcase.demo.model.BookDTO;
+import com.bookcase.demo.dto.BookCategory;
+import com.bookcase.demo.dto.BookDTO;
 import com.bookcase.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

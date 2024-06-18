@@ -1,4 +1,4 @@
-package com.bookcase.demo.model;
+package com.bookcase.demo.dto;
 
 import lombok.Builder;
 import lombok.Data;
