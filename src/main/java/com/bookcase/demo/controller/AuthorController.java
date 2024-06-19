@@ -57,7 +57,7 @@ public class AuthorController {
     }
 
     @PatchMapping("/{id}")
-    public AuthorDTO partialUpdateAlive2(@RequestParam(name="id") Long id, @RequestBody AuthorDTO authorDTO){
+    public AuthorDTO partialUpdateAlive2(@RequestParam(name="id") Integer id, @RequestBody AuthorDTO authorDTO){
         return authorService.partialUpadateAuthor(id, authorDTO);
     }
 

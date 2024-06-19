@@ -46,7 +46,7 @@ public class AuthorService {
 
     public Author getAuthorById(Integer id) throws AuthorNotFoundException {
         return this.authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author not found on::" + id));
+                .orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
     public void deleteAuthor(Integer id) {
@@ -67,8 +67,8 @@ public class AuthorService {
     }
 
     @Transactional
-    public AuthorDTO partialUpadateAuthor(Long id, AuthorDTO authorDTO) {
-        Author author = authorRepository.findById(id.intValue()).orElseThrow(AuthorNotFoundException::new);
+    public AuthorDTO partialUpadateAuthor(Integer id, AuthorDTO authorDTO) {
+        Author author = authorRepository.findById(id.intValue()).orElseThrow(()->new AuthorNotFoundException(id));
         log.info("Author before update: {}", author);
 
         authorMapperForPartialUpdates.map(authorDTO, author);
