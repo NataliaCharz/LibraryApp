@@ -6,7 +6,6 @@ import com.bookcase.demo.mapper.AuthorMapper;
 import com.bookcase.demo.mapper.AuthorMapperForPartialUpdates;
 import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.repository.AuthorRepository;
-import com.bookcase.demo.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +53,7 @@ public class AuthorService {
         this.authorRepository.delete(authorToDelete);
     }
 
-    public void createAuthor(Author author) {
+    public void saveAuthor(Author author) {
         this.authorRepository.save(author);
     }
 
