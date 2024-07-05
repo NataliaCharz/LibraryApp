@@ -11,9 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 //@ComponentScan("com.bookcase")
 public class BookcaseApplication {
 	public static void main(String[] args) {
-		ApplicationContext apc = SpringApplication.run(BookcaseApplication.class, args);
-		for (String s:apc.getBeanDefinitionNames()){
-			System.out.println(s);
-		}
+		SpringApplication.run(BookcaseApplication.class, args);
+
 	}
 }

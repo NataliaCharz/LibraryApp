@@ -30,6 +30,11 @@ logging:
         web: INFO
         security: TRACE
 
+library:
+  baseUrl: "https://openlibrary.org"
+  path: "/search.json"
+  fields: "title"
+
 #hibernate:
 #  transaction:
 #    jta:
