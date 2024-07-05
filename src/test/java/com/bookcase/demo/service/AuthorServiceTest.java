@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
@@ -19,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AuthorServiceTest {
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private AuthorService authorService;
 
     @BeforeEach
     public void setUp() {
@@ -33,8 +36,17 @@ public class AuthorServiceTest {
         authorRepository.saveAndFlush(author4);
     }
 
-//    @Test
-//    public void
+    @Test
+    public void givenAuthorIdDoesNotExistWhenUsingGetAuthorByIdThen404IsReceived(){
+        //given
+        int authorId = 5;
+
+        //when
+        Author authorNotFound = authorService.getAuthorById(authorId);
+
+        //then
+
+    }
     @Test
     public void saveAuthorWillReturnNewListSize(){
         //given

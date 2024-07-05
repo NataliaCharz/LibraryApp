@@ -1,10 +1,10 @@
 package com.bookcase.demo.service;
 
+import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.exception.AuthorNotFoundException;
 import com.bookcase.demo.mapper.AuthorMapper;
 import com.bookcase.demo.mapper.AuthorMapperForPartialUpdates;
-import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.repository.AuthorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ public class AuthorService {
 
     @Transactional
     public AuthorDTO partialUpadateAuthor(Integer id, AuthorDTO authorDTO) {
-        Author author = authorRepository.findById(id.intValue()).orElseThrow(()->new AuthorNotFoundException(id));
+        Author author = authorRepository.findById(id.intValue()).orElseThrow(() -> new AuthorNotFoundException(id));
         log.info("Author before update: {}", author);
 
         authorMapperForPartialUpdates.map(authorDTO, author);
