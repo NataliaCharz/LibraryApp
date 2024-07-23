@@ -12,9 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapperForPartialUpdates authorMapperForPartialUpdates;
     private static final int page_Size = 20;
+
 
     //wszyscy autorzy
     public List<Author> getAllAuthors() {
@@ -48,11 +52,23 @@ public class AuthorService {
                 .orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
+    //autorzy, którzy żyją lub nie żyją
+    public List<Author> getAuthorsDeadOrALive(Boolean isALive){
+        List<Author> allAuthors = this.authorRepository.findAll();
+        List<Author> authorsIsAlive = allAuthors.stream()
+                .filter(author -> author.getAlive().equals(isALive))
+                .collect(Collectors.toList());
+        return authorsIsAlive;
+    }
+
+    //usuń autora
     public void deleteAuthor(Integer id) {
         Author authorToDelete = getAuthorById(id);
         this.authorRepository.delete(authorToDelete);
     }
 
+    //zapisz autora
+    @ResponseStatus(HttpStatus.CREATED)
     public void saveAuthor(Author author) {
         this.authorRepository.save(author);
     }
