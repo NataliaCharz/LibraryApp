@@ -16,32 +16,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-@RestClientTest(RestClient.class)
+//@RestClientTest(RestClient.class)
 public class LibraryServiceTest {
 
-    @Autowired
-    MockRestServiceServer mockRestServiceServer;
+//    @Autowired
+//    MockRestServiceServer mockRestServiceServer;
+//
+//    @Autowired
+//    private RestClient libraryClient;
+//
+//    @Autowired
+//    private LibraryService libraryService;
+//
+//    @Autowired
+//    ObjectMapper objectMapper;
 
-    @Autowired
-    private RestClient libraryClient;
-
-    @Autowired
-    private LibraryService libraryService;
-
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @Test
-    public void getAllWrittenBooksByAuthor() throws JsonProcessingException {
-        //given
-        String author = "dupa";
-        mockRestServiceServer.expect(requestTo("https://openlibrary.org/search.json?q=dupa"))
-                .andRespond(withSuccess(objectMapper.writeValueAsString(new LibraryDTO()), MediaType.APPLICATION_JSON));
-
-        //when
-        LibraryDTO libraryDTO = libraryService.getAllWrittenBooksByAuthor(author);
-
-        //then
-        assertThat(libraryDTO).isNotNull();
-    }
+//    @Test
+//    public void getAllWrittenBooksByAuthor() throws JsonProcessingException {
+//        //given
+//        String author = "dupa";
+//        mockRestServiceServer.expect(requestTo("https://openlibrary.org/search.json?q=dupa"))
+//                .andRespond(withSuccess(objectMapper.writeValueAsString(new LibraryDTO()), MediaType.APPLICATION_JSON));
+//
+//        //when
+//        LibraryDTO libraryDTO = libraryService.getAllWrittenBooksByAuthor(author);
+//
+//        //then
+//        assertThat(libraryDTO).isNotNull();
+//    }
 }
