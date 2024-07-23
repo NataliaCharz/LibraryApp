@@ -4,6 +4,8 @@ import com.bookcase.demo.dto.AuthorSex;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -30,8 +32,8 @@ public class Author {
     @Column(name="SEX")
     private AuthorSex sex;
 
-    @Column(name="AGE")
-    private Integer age;
+    @Column(name="DATE_OF_BIRTH")
+    private LocalDate dateOfBirth;
 
     @Column(name="IS_ALIVE")
     private Boolean alive;

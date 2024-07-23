@@ -1,7 +1,7 @@
-insert into author(id, name, surname, sex, age, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq), 'Arthur', 'Conan Doyle', 'MALE', 71, 0);
-insert into author(id, name, surname, sex, age, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq),'Joseph', 'Heller', 'MALE', 76, 0);
-insert into author(id, name, surname, sex, age, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq),'George', 'Orwell', 'MALE', 47, 0);
-insert into author(id, name, surname, sex, age, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq),'Paolo', 'Coehlo', 'MALE', 76, 1);
+insert into author(id, name, surname, sex, date_of_birth, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq), 'Arthur', 'Conan Doyle', 'MALE', '1859-05-22', 0);
+insert into author(id, name, surname, sex, date_of_birth, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq),'Joseph', 'Heller', 'MALE', '1923-05-01', 0);
+insert into author(id, name, surname, sex, date_of_birth, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq),'George', 'Orwell', 'MALE', '1903-06-25', 0);
+insert into author(id, name, surname, sex, date_of_birth, is_alive) values ((VALUES NEXT VALUE FOR public.author_seq),'Paolo', 'Coehlo', 'MALE', '1947-08-24', 1);
 
 
 insert into book(id, author_id, title, pages, category, read_book) values ((VALUES NEXT VALUE FOR public.book_seq), 1, 'Sherlock Holmes', 140, 'ADVENTURE', 0);
