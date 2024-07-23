@@ -24,6 +24,7 @@ public class BookMapper {
                 .pages(bookDTO.getPages())
                 .category(bookDTO.getCategory())
                 .readBook(bookDTO.getReadBook())
+//                .author(bookDTO.getAuthorId())
                 .build();
     }
 
@@ -39,6 +40,7 @@ public class BookMapper {
                 .pages(book.getPages())
                 .category(book.getCategory())
                 .readBook(book.getReadBook())
+                .authorId(book.getAuthor().getId())
                 .build();
     }
 }

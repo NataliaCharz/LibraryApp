@@ -1,5 +1,6 @@
 package com.bookcase.demo.controller;
 
+import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.mapper.BookMapper;
 import com.bookcase.demo.dto.BookCategory;
 import com.bookcase.demo.dto.BookDTO;
@@ -36,10 +37,14 @@ public class BookController {
         }
     }
 
-
     @GetMapping("/{id}")
     public BookDTO getBookById(@PathVariable(name = "id") Integer id) {
         return BookMapper.mapBookToDTO(bookService.getById(id));
+    }
+
+    @GetMapping("/author")
+    public List<AuthorDTO> getBookAuthor(@RequestParam String title){
+        return this.bookService.getBookAuthor(title);
     }
     
     @GetMapping("/find-by-category/{category}")
@@ -50,8 +55,8 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public void addNewBook(@RequestBody BookDTO bookDTO){
-        bookService.createNewBook(BookMapper.mapBookFromDTO(bookDTO));
+    public void addNewBook(@RequestBody BookDTO bookDTO, @RequestParam Integer authorId){
+        bookService.createNewBook(BookMapper.mapBookFromDTO(bookDTO),authorId);
     }
 
     @DeleteMapping("/delete/{id}")

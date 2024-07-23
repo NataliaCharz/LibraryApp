@@ -1,10 +1,15 @@
 package com.bookcase.demo.service;
 
+import com.bookcase.demo.dto.AuthorDTO;
+import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.entity.Book;
+import com.bookcase.demo.exception.AuthorNotFoundException;
 import com.bookcase.demo.exception.BookNotFoundException;
+import com.bookcase.demo.mapper.AuthorMapper;
 import com.bookcase.demo.mapper.BookMapper;
 import com.bookcase.demo.dto.BookCategory;
 import com.bookcase.demo.dto.BookDTO;
+import com.bookcase.demo.repository.AuthorRepository;
 import com.bookcase.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +21,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 @Service
 @RequiredArgsConstructor
@@ -23,13 +32,14 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
     private static final int PAGE_SIZE = 20;
 
     public List<Book> getAllBooks() {
         return this.bookRepository.findAll();
     }
 
-    public Page<Book> getBooksByPage(int page, Sort.Direction sort){
+    public Page<Book> getBooksByPage(int page, Sort.Direction sort) {
         return this.bookRepository.findAll(PageRequest.of(page, PAGE_SIZE, Sort.by(sort, "id")));
     }
 
@@ -56,11 +66,19 @@ public class BookService {
         return fitList;
     }
 
-    public void createNewBook(Book bookToSave){
-        this.bookRepository.save(bookToSave);
+    public void createNewBook(Book bookToSave, Integer authorId) {
+        Optional<Author> author = this.authorRepository.findById(authorId);
+        if (author.isPresent()) {
+            bookToSave.setAuthor(author.get());
+            this.bookRepository.save(bookToSave);
+        } else {
+            throw new AuthorNotFoundException(authorId);
+        }
+
+
     }
 
-    public void deleteBookById(Integer id){
+    public void deleteBookById(Integer id) {
         Optional<Book> bookById = this.bookRepository.findById(id);
         if (!bookById.isPresent()) {
             log.info("There is no book with id: {}", id);
@@ -71,21 +89,28 @@ public class BookService {
         log.info("Book's been successfully removed");
     }
 
-    public BookDTO updateBookDTO(Integer id, BookDTO bookDTO){
+    public BookDTO updateBookDTO(Integer id, BookDTO bookDTO) {
         Optional<Book> bookToUpdateOptional = this.bookRepository.findById(id);
-        if(bookToUpdateOptional.isEmpty()){
+        if (bookToUpdateOptional.isEmpty()) {
             log.info("Book with this id: {} do not exist.", id);
             throw new BookNotFoundException();
         }
         Book bookToUpdate = bookToUpdateOptional.get();
-        bookToUpdate=BookMapper.mapBookFromDTO(bookDTO);
+        bookToUpdate = BookMapper.mapBookFromDTO(bookDTO);
         this.bookRepository.save(bookToUpdate);
         return BookMapper.mapBookToDTO(bookToUpdate);
     }
 
     public List<Book> getByCategory(BookCategory category) {
-        return  this.bookRepository.findByCategory(category);
+        return this.bookRepository.findByCategory(category);
     }
 
 
+    public List<AuthorDTO> getBookAuthor(String title) {
+        List<Book> bookList = this.bookRepository.findAllBooksByTitle(title);
+        List<Author> authorList = bookList.stream()
+                .map(Book::getAuthor)
+                .collect(Collectors.toList());
+        return AuthorMapper.mapAuthorToDTOList(authorList);
+    }
 }
