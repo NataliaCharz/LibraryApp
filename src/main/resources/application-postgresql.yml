@@ -1,0 +1,18 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+        platform: postgres
+        driver-class-name: org.postgresql.Driver
+        url: "jdbc:postgresql://localhost:8090/authors"
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
