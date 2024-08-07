@@ -1,9 +1,9 @@
 package com.bookcase.demo.controller;
 
 import com.bookcase.demo.dto.AuthorDTO;
-import com.bookcase.demo.mapper.BookMapper;
 import com.bookcase.demo.dto.BookCategory;
 import com.bookcase.demo.dto.BookDTO;
+import com.bookcase.demo.mapper.BookMapper;
 import com.bookcase.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -19,27 +19,28 @@ import java.util.stream.Collectors;
 public class BookController {
 
     private final BookService bookService;
+    private final BookMapper bookMapper;
 
     @GetMapping("/search")
     public List<BookDTO> getBooks(@RequestParam String character) {
         return bookService.getAllBooksStartsByCharacter(character)
                 .stream()
-                .map(BookMapper::mapBookToDTO)
+                .map(bookMapper::mapBookToDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/all")
     public List<BookDTO> getBooksByPage(@RequestParam (name = "pageNum", required = false) Integer pageNum, Sort.Direction sort){
         if(pageNum == null){
-            return BookMapper.mapBookToDTOList(bookService.getAllBooks());
+            return bookMapper.mapBookToDtoList(bookService.getAllBooks());
         } else {
-            return BookMapper.mapBookToDTOList(bookService.getBooksByPage(pageNum, sort).toList());
+            return bookMapper.mapBookToDtoList(bookService.getBooksByPage(pageNum, sort).toList());
         }
     }
 
     @GetMapping("/{id}")
     public BookDTO getBookById(@PathVariable(name = "id") Integer id) {
-        return BookMapper.mapBookToDTO(bookService.getById(id));
+        return bookMapper.mapBookToDto(bookService.getById(id));
     }
 
     @GetMapping("/author")
@@ -50,13 +51,13 @@ public class BookController {
     @GetMapping("/find-by-category/{category}")
     public List<BookDTO> getBookByCategory(@PathVariable(name = "category")BookCategory category){
         return bookService.getByCategory(category).stream()
-                .map(BookMapper::mapBookToDTO)
+                .map(bookMapper::mapBookToDto)
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/add")
     public void addNewBook(@RequestBody BookDTO bookDTO, @RequestParam Integer authorId){
-        bookService.createNewBook(BookMapper.mapBookFromDTO(bookDTO),authorId);
+        bookService.createNewBook(bookMapper.mapBookFromDto(bookDTO),authorId);
     }
 
     @DeleteMapping("/delete/{id}")

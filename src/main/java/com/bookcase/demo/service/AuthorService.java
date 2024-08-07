@@ -3,7 +3,7 @@ package com.bookcase.demo.service;
 import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.exception.AuthorNotFoundException;
-import com.bookcase.demo.mapper.AuthorMapper;
+import com.bookcase.demo.mapper.AuthorMapperMapStruct;
 import com.bookcase.demo.mapper.AuthorMapperForPartialUpdates;
 import com.bookcase.demo.repository.AuthorRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +26,7 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorMapperForPartialUpdates authorMapperForPartialUpdates;
+    private final AuthorMapperMapStruct authorMapper;
     private static final int page_Size = 20;
 
 
@@ -76,9 +77,9 @@ public class AuthorService {
 
     public AuthorDTO updateAuthor(Integer id, AuthorDTO authorDTO) {
         Author authorToUpdate = getAuthorById(id);
-        authorToUpdate = AuthorMapper.mapAuthorWithBookFromDTO(authorDTO);
+        authorToUpdate = authorMapper.mapAuthorDTOtoAuthor(authorDTO);
         this.authorRepository.save(authorToUpdate);
-        return AuthorMapper.mapAuthorWithBookToDTO(authorToUpdate);
+        return authorMapper.mapAuthorToDTO(authorToUpdate);
     }
 
     @Transactional
@@ -90,7 +91,7 @@ public class AuthorService {
 
         log.info("Author after update: {}", author);
 
-        return AuthorMapper.mapAuthorToDTO(author);
+        return authorMapper.mapAuthorToDTO(author);
     }
 
 }

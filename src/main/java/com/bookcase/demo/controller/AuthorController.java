@@ -1,7 +1,7 @@
 package com.bookcase.demo.controller;
 
 import com.bookcase.demo.dto.AuthorDTO;
-import com.bookcase.demo.mapper.AuthorMapper;
+import com.bookcase.demo.mapper.AuthorMapperMapStruct;
 import com.bookcase.demo.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -16,15 +16,16 @@ import java.util.List;
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final AuthorMapperMapStruct authorMapper;
 
     //wszyscy autorzy bez stron i ze stronami
     @GetMapping()
     public List<AuthorDTO> getAuthors(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort, Model model) {
 //        model.addAllAttributes("name", Author.)
         if (pageNum == null) {
-            return AuthorMapper.mapAuthorToDTOList(authorService.getAllAuthors());
+            return authorMapper.mapAuthorToDtoList(authorService.getAllAuthors());
         } else {
-            return AuthorMapper.mapAuthorToDTOList(authorService.getAuthorsByPage(pageNum, sort).toList());
+            return authorMapper.mapAuthorToDtoList(authorService.getAuthorsByPage(pageNum, sort).toList());
         }
 //        return "authors";
     }
@@ -33,22 +34,22 @@ public class AuthorController {
     @GetMapping("/books")
     public List<AuthorDTO> getAuthorsWithBooks(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort) {
         if (pageNum == null) {
-            return AuthorMapper.mapAuthorWithBookToDTOList(authorService.getAuthorsWithBooks());
+            return authorMapper.mapAuthorToDtoList(authorService.getAuthorsWithBooks());
         } else {
-            return AuthorMapper.mapAuthorWithBookToDTOList(authorService.getAuthorsWithBooksByPage(pageNum, sort).toList());
+            return authorMapper.mapAuthorToDtoList(authorService.getAuthorsWithBooksByPage(pageNum, sort).toList());
         }
     }
 
     //autor wyszukiwany po id
     @GetMapping("/{id}")
     public AuthorDTO getAuthorById(@PathVariable(name = "id") Integer id) {
-        return AuthorMapper.mapAuthorWithBookToDTO(authorService.getAuthorById(id));
+        return authorMapper.mapAuthorToDTO(authorService.getAuthorById(id));
     }
 
     //wszyscy autorzy ktorzy zyja lub nie
     @GetMapping("/alive")
     public List<AuthorDTO> getAuthorsDeadOrAlive(@RequestParam(name = "isAlive") Boolean isAlive){
-        return AuthorMapper.mapAuthorToDTOList(authorService.getAuthorsDeadOrALive(isAlive));
+        return authorMapper.mapAuthorToDtoList(authorService.getAuthorsDeadOrALive(isAlive));
     }
 
     @DeleteMapping("/{id}")
@@ -58,7 +59,7 @@ public class AuthorController {
 
     @PostMapping()
     public void addNewAuthor(@RequestBody AuthorDTO authorDTO) {
-        authorService.saveAuthor(AuthorMapper.mapAuthorWithBookFromDTO(authorDTO));
+        authorService.saveAuthor(authorMapper.mapAuthorDTOtoAuthor(authorDTO));
     }
 
     @PutMapping("/{id}")

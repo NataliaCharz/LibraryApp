@@ -1,46 +1,18 @@
 package com.bookcase.demo.mapper;
 
-import com.bookcase.demo.entity.Book;
 import com.bookcase.demo.dto.BookDTO;
-import lombok.experimental.UtilityClass;
+import com.bookcase.demo.entity.Book;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@UtilityClass
-public class BookMapper {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface BookMapper {
+    BookMapper INSTANCE = Mappers.getMapper(BookMapper.class);
+    BookDTO mapBookToDto(Book book);
+    Book mapBookFromDto(BookDTO bookDTO);
+    List<BookDTO> mapBookToDtoList(List<Book> books);
 
-    private BookMapper bookMapper;
-
-    public static List<Book> mapBookFromDTOList(List<BookDTO> bookDTOS){
-        return bookDTOS.stream()
-                .map(BookMapper::mapBookFromDTO)
-                .collect(Collectors.toList());
-    }
-
-    public static Book mapBookFromDTO(BookDTO bookDTO){
-        return Book.builder()
-                .title(bookDTO.getTitle())
-                .pages(bookDTO.getPages())
-                .category(bookDTO.getCategory())
-                .readBook(bookDTO.getReadBook())
-//                .author(bookDTO.getAuthorId())
-                .build();
-    }
-
-    public static List<BookDTO> mapBookToDTOList(List<Book> books){
-        return books.stream()
-                .map(BookMapper::mapBookToDTO)
-                .collect(Collectors.toList());
-    }
-
-    public static BookDTO mapBookToDTO(Book book){
-        return BookDTO.builder()
-                .title(book.getTitle())
-                .pages(book.getPages())
-                .category(book.getCategory())
-                .readBook(book.getReadBook())
-                .authorId(book.getAuthor().getId())
-                .build();
-    }
 }

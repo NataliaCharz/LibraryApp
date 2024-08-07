@@ -5,10 +5,10 @@ import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.entity.Book;
 import com.bookcase.demo.exception.AuthorNotFoundException;
 import com.bookcase.demo.exception.BookNotFoundException;
-import com.bookcase.demo.mapper.AuthorMapper;
-import com.bookcase.demo.mapper.BookMapper;
+import com.bookcase.demo.mapper.AuthorMapperMapStruct;
 import com.bookcase.demo.dto.BookCategory;
 import com.bookcase.demo.dto.BookDTO;
+import com.bookcase.demo.mapper.BookMapper;
 import com.bookcase.demo.repository.AuthorRepository;
 import com.bookcase.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
@@ -33,6 +32,8 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final AuthorMapperMapStruct authorMapper;
+    private final BookMapper bookMapper;
     private static final int PAGE_SIZE = 20;
 
     public List<Book> getAllBooks() {
@@ -96,9 +97,9 @@ public class BookService {
             throw new BookNotFoundException();
         }
         Book bookToUpdate = bookToUpdateOptional.get();
-        bookToUpdate = BookMapper.mapBookFromDTO(bookDTO);
+        bookToUpdate = bookMapper.mapBookFromDto(bookDTO);
         this.bookRepository.save(bookToUpdate);
-        return BookMapper.mapBookToDTO(bookToUpdate);
+        return bookMapper.mapBookToDto(bookToUpdate);
     }
 
     public List<Book> getByCategory(BookCategory category) {
@@ -111,6 +112,6 @@ public class BookService {
         List<Author> authorList = bookList.stream()
                 .map(Book::getAuthor)
                 .collect(Collectors.toList());
-        return AuthorMapper.mapAuthorToDTOList(authorList);
+        return authorMapper.mapAuthorToDtoList(authorList);
     }
 }
