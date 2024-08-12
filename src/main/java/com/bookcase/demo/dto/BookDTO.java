@@ -14,12 +14,12 @@ public class BookDTO {
     private Boolean readBook;
     private Integer authorId;
 
-    public BookDTO(String title, int pages, BookCategory category, boolean readBook, Integer authorId){
-        this.title=title;
-        this.pages=pages;
-        this.category=category;
-        this.readBook=readBook;
-        this.authorId=authorId;
+    public BookDTO(String title, int pages, BookCategory category, boolean readBook, Integer authorId) {
+        this.title = title;
+        this.pages = pages;
+        this.category = category;
+        this.readBook = readBook;
+        this.authorId = authorId;
     }
 
 }

@@ -22,7 +22,6 @@ public interface AuthorMapperMapStruct {
 
     Author mapAuthorDTOtoAuthor(AuthorDTO authorDTO);
 
-    @Named("calculateAge")
     default Integer calculateAge(LocalDate dateOfBirth) {
         LocalDate currentDate = LocalDate.now();
         if (dateOfBirth.isAfter(currentDate)) {

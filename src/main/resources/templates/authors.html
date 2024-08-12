@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Authors</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="/table/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/table/css/style.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>
+				Authors
+			</h3>
+			<table class="table table-hover table-striped">
+				<thead>
+					<tr>
+						<th>
+							Name
+						</th>
+						<th>
+							Surname
+						</th>
+						<th>
+							Sex
+						</th>
+						<th>
+							Date Of Birth
+						</th>
+						<th>
+							Age
+						</th>
+						<th>
+							Is Author alive?
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each = "a: ${authors}">
+						<td th:text="${a.name}">
+						</td>
+						<td th:text="${a.surname}">
+						</td>
+						<td th:text="${a.sex}">
+						</td>
+						<td th:text="${a.dateOfBirth}">
+						</td>
+						<td th:text="${a.age}">
+						</td>
+						<td th:text="${a.alive}">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+    <script src="/table/js/jquery.min.js"></script>
+    <script src="/table/js/bootstrap.min.js"></script>
+    <script src="/table/js/scripts.js"></script>
+  </body>
+</html>

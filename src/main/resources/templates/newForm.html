@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/defaultLayout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Your experience</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <form>
+            <div class="mb-3">
+                <label for="experience" class="form-label">Your experience with this book</label>
+                <input type="text" class="form-control" id="experience" aria-describedby="experienceHelp">
+                <div id="experienceHelp" class="form-text">Write something which reminds You of the book.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+
+    </div>
+</body>
+</html>

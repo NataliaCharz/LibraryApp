@@ -4,13 +4,13 @@ import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.mapper.AuthorMapperMapStruct;
 import com.bookcase.demo.service.AuthorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/authors")
 public class AuthorController {
@@ -20,24 +20,15 @@ public class AuthorController {
 
     //wszyscy autorzy bez stron i ze stronami
     @GetMapping()
-    public List<AuthorDTO> getAuthors(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort, Model model) {
-//        model.addAllAttributes("name", Author.)
-        if (pageNum == null) {
-            return authorMapper.mapAuthorToDtoList(authorService.getAllAuthors());
-        } else {
-            return authorMapper.mapAuthorToDtoList(authorService.getAuthorsByPage(pageNum, sort).toList());
-        }
-//        return "authors";
+    public String getAuthors(Model model) {
+             model.addAttribute("authors",authorMapper.mapAuthorToDtoList(authorService.getAllAuthors()));
+             return "authors";
     }
 
     //wszyscy autorzy z ksiazkami bez stron i ze stronami
     @GetMapping("/books")
-    public List<AuthorDTO> getAuthorsWithBooks(@RequestParam(name = "pageNum", required = false) Integer pageNum, Sort.Direction sort) {
-        if (pageNum == null) {
+    public List<AuthorDTO> getAuthorsWithBooks() {
             return authorMapper.mapAuthorToDtoList(authorService.getAuthorsWithBooks());
-        } else {
-            return authorMapper.mapAuthorToDtoList(authorService.getAuthorsWithBooksByPage(pageNum, sort).toList());
-        }
     }
 
     //autor wyszukiwany po id

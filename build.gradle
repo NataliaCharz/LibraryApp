@@ -4,7 +4,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.bookcase'
+group = 'com.library'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -40,6 +40,8 @@ dependencies {
 	implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+
 
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation 'org.springframework.security:spring-security-config'

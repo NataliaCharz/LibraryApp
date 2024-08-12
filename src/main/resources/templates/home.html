@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>My Portable Library</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="/navbar/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/navbar/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/authors}">Authors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/books}">Books</a>
+                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link disabled" href="#">Books</a>-->
+<!--                </li>-->
+                <li class="nav-item dropdown ml-md-auto">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown">Dropdown link</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider">
+                        </div> <a class="dropdown-item" href="#">Separated link</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="jumbotron">
+                <section>
+                    <div class="title_box">
+                        <h1> My Portable Library! </h1>
+                    </div>
+                    <h2>Why to use this app?</h2>
+                    <ul th:each="item: ${features}">
+                        <li th:text="${item}">
+                    </ul>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div>
+        <p class="alert alert-primary">If you want to see full code</p>
+        <a href="https://github.com/NataliaCharz/LibraryApp"
+           target="_blank">Click here</a>
+    </div>
+    <p th:class="light_text">Natalia Charzyńska</p>
+</footer>
+<script src="/navbar/js/jquery.min.js"></script>
+<script src="/navbar/js/bootstrap.min.js"></script>
+<script src="/navbar/js/scripts.js"></script>
+
+    </body>
+</html>
