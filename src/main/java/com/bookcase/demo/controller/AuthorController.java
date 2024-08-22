@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/authors")
 public class AuthorController {
@@ -19,10 +19,14 @@ public class AuthorController {
     private final AuthorMapperMapStruct authorMapper;
 
     //wszyscy autorzy bez stron i ze stronami
+//    @GetMapping()
+//    public String getAuthors(Model model) {
+//             model.addAttribute("authors",authorMapper.mapAuthorToDtoList(authorService.getAllAuthors()));
+//             return "authors";
+//    }
     @GetMapping()
-    public String getAuthors(Model model) {
-             model.addAttribute("authors",authorMapper.mapAuthorToDtoList(authorService.getAllAuthors()));
-             return "authors";
+    public List<AuthorDTO> getAuthors(){
+        return authorMapper.mapAuthorToDtoList(authorService.getAllAuthors());
     }
 
     //wszyscy autorzy z ksiazkami bez stron i ze stronami

@@ -1,18 +1,15 @@
-server:
-  port: 8090
-
 spring:
   datasource:
-        platform: postgres
-        driver-class-name: org.postgresql.Driver
-        url: "jdbc:postgresql://localhost:8090/authors"
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/library"
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
     show-sql: true
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
+#    defer-datasource-initialization: true
+#  sql:
+#    init:
+#      mode: always

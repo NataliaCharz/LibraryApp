@@ -40,7 +40,6 @@ public class BookService {
         return this.bookRepository.findAll();
     }
 
-
     public Book getById(Integer id) {
         Optional<Book> bookFoundById = this.bookRepository.findById(id);
         if (!bookFoundById.isPresent()) {
@@ -72,8 +71,6 @@ public class BookService {
         } else {
             throw new AuthorNotFoundException(authorId);
         }
-
-
     }
 
     public void deleteBookById(Integer id) {
@@ -106,7 +103,9 @@ public class BookService {
 
     public List<AuthorDTO> getBookAuthor(String title) {
         List<Book> bookList = this.bookRepository.findAllBooksByTitle(title);
-        List<Author> authorList = bookList.stream().map(Book::getAuthor).collect(Collectors.toList());
+        List<Author> authorList = bookList.stream()
+                .map(Book::getAuthor)
+                .collect(Collectors.toList());
         return authorMapper.mapAuthorToDtoList(authorList);
     }
 }

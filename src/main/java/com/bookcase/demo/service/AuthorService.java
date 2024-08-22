@@ -35,18 +35,10 @@ public class AuthorService {
         return this.authorRepository.findAll();
     }
 
-//    //wszyscy autorzy ze stronami
-//    public Page<Author> getAuthorsByPage(int page, Sort.Direction sort) {
-//        return this.authorRepository.findAll(PageRequest.of(page, page_Size, Sort.by(sort, "id")));
-//    }
 
     public List<Author> getAuthorsWithBooks() {
         return this.authorRepository.findAllWithBooks();
     }
-
-//    public Page<Author> getAuthorsWithBooksByPage(int page, Sort.Direction sort) {
-//        return this.authorRepository.findAllWithBooksByPage(PageRequest.of(page, page_Size, Sort.by(sort, "id")));
-//    }
 
     public Author getAuthorById(Integer id) throws AuthorNotFoundException {
         return this.authorRepository.findById(id)
