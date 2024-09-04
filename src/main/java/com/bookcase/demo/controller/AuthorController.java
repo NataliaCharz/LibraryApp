@@ -4,8 +4,6 @@ import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.mapper.AuthorMapperMapStruct;
 import com.bookcase.demo.service.AuthorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +16,13 @@ public class AuthorController {
     private final AuthorService authorService;
     private final AuthorMapperMapStruct authorMapper;
 
-    //wszyscy autorzy bez stron i ze stronami
-//    @GetMapping()
-//    public String getAuthors(Model model) {
-//             model.addAttribute("authors",authorMapper.mapAuthorToDtoList(authorService.getAllAuthors()));
-//             return "authors";
-//    }
+    //wszyscy autorzy
     @GetMapping()
     public List<AuthorDTO> getAuthors(){
         return authorMapper.mapAuthorToDtoList(authorService.getAllAuthors());
     }
 
-    //wszyscy autorzy z ksiazkami bez stron i ze stronami
+    //wszyscy autorzy z ksiazkami
     @GetMapping("/books")
     public List<AuthorDTO> getAuthorsWithBooks() {
             return authorMapper.mapAuthorToDtoList(authorService.getAuthorsWithBooks());

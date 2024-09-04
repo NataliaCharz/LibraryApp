@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/books")
 public class BookController {
@@ -23,11 +23,6 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
 
-    @GetMapping()
-    public String getBooks(Model model){
-        model.addAttribute("books",bookMapper.mapBookToDtoList(bookService.getAllBooks()));
-        return "books";
-    }
     @GetMapping("/search")
     public List<BookDTO> getBooks(@RequestParam String character) {
         return bookService.getAllBooksStartsByCharacter(character)
