@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class Book {
 
     @Id
-//    @SequenceGenerator(name="book_seq", sequenceName="book_seq", allocationSize = 1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator = "book_seq")
+    @SequenceGenerator(name="book_id_seq", sequenceName="book_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="TITLE", nullable = false)
