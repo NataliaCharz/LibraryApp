@@ -1,24 +1,22 @@
 package com.bookcase.demo.mapper;
 
 import com.bookcase.demo.dto.AuthorDTO;
-import com.bookcase.demo.dto.BookDTO;
 import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.exception.InvalidDateOfBirthException;
 import org.mapstruct.*;
-import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {BookMapper.class})
 public interface AuthorMapperMapStruct {
     @Mapping(source = ".", target = "age", qualifiedByName = "calculateAgeIfAuthorIsALive")
     @Mapping(source = "books", target = "bookDTOS")
     AuthorDTO mapAuthorToDTO(Author author);
+    void mapAuthorDTOToAuthorInMemory(AuthorDTO authorDTO, @MappingTarget Author author);
 
-    List<AuthorDTO> mapAuthorToDtoList(List<Author> authors);
+    List<AuthorDTO> mapAuthorToDTOList(List<Author> authors);
 
     Author mapAuthorDTOtoAuthor(AuthorDTO authorDTO);
 

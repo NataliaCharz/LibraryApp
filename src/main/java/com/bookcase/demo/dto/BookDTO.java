@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 public class BookDTO {
+    private Integer id;
     private String title;
     private Integer pages;
     private BookCategory category;
     private Boolean readBook;
     private Integer authorId;
 
-    public BookDTO(String title, int pages, BookCategory category, boolean readBook, Integer authorId) {
+    public BookDTO(Integer id, String title, int pages, BookCategory category, boolean readBook, Integer authorId) {
+        this.id = id;
         this.title = title;
         this.pages = pages;
         this.category = category;

@@ -1,4 +1,4 @@
-insert into author(name, surname, sex, date_of_birth, is_alive) values ( 'Arthur Conan', 'Doyle', 'MALE', '1859-05-22', false);
+insert into author(name, surname, sex, date_of_birth, is_alive) values ('Arthur Conan', 'Doyle', 'MALE', '1859-05-22', false);
 insert into author(name, surname, sex, date_of_birth, is_alive) values ('Joseph', 'Heller', 'MALE', '1923-05-01', false);
 insert into author(name, surname, sex, date_of_birth, is_alive) values ('George', 'Orwell', 'MALE', '1903-06-25', false);
 insert into author(name, surname, sex, date_of_birth, is_alive) values ('Paolo', 'Coehlo', 'MALE', '1947-08-24', true);

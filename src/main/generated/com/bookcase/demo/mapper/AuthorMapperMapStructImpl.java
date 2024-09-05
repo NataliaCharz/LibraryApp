@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-19T14:11:33+0200",
+    date = "2024-09-05T17:52:45+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.1 (Oracle Corporation)"
 )
 @Component
@@ -39,7 +39,20 @@ public class AuthorMapperMapStructImpl implements AuthorMapperMapStruct {
     }
 
     @Override
-    public List<AuthorDTO> mapAuthorToDtoList(List<Author> authors) {
+    public void mapAuthorDTOToAuthorInMemory(AuthorDTO authorDTO, Author author) {
+        if ( authorDTO == null ) {
+            return;
+        }
+
+        author.setName( authorDTO.getName() );
+        author.setSurname( authorDTO.getSurname() );
+        author.setSex( authorDTO.getSex() );
+        author.setDateOfBirth( authorDTO.getDateOfBirth() );
+        author.setAlive( authorDTO.getAlive() );
+    }
+
+    @Override
+    public List<AuthorDTO> mapAuthorToDTOList(List<Author> authors) {
         if ( authors == null ) {
             return null;
         }

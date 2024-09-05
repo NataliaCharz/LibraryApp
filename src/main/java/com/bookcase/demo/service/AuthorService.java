@@ -9,15 +9,11 @@ import com.bookcase.demo.repository.AuthorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +23,6 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapperForPartialUpdates authorMapperForPartialUpdates;
     private final AuthorMapperMapStruct authorMapper;
-    private static final int page_Size = 20;
 
 
     //wszyscy autorzy
@@ -48,10 +43,9 @@ public class AuthorService {
     //autorzy, którzy żyją lub nie żyją
     public List<Author> getAuthorsDeadOrALive(Boolean isALive){
         List<Author> allAuthors = this.authorRepository.findAll();
-        List<Author> authorsIsAlive = allAuthors.stream()
+        return allAuthors.stream()
                 .filter(author -> author.getAlive().equals(isALive))
-                .collect(Collectors.toList());
-        return authorsIsAlive;
+                .toList();
     }
 
     //usuń autora
@@ -66,17 +60,16 @@ public class AuthorService {
         this.authorRepository.save(author);
     }
 
-
     public AuthorDTO updateAuthor(Integer id, AuthorDTO authorDTO) {
         Author authorToUpdate = getAuthorById(id);
-        authorToUpdate = authorMapper.mapAuthorDTOtoAuthor(authorDTO);
+        authorMapper.mapAuthorDTOToAuthorInMemory(authorDTO, authorToUpdate);
         this.authorRepository.save(authorToUpdate);
         return authorMapper.mapAuthorToDTO(authorToUpdate);
     }
 
     @Transactional
-    public AuthorDTO partialUpadateAuthor(Integer id, AuthorDTO authorDTO) {
-        Author author = authorRepository.findById(id.intValue()).orElseThrow(() -> new AuthorNotFoundException(id));
+    public AuthorDTO partialUpdateAuthor(Integer id, AuthorDTO authorDTO) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
         log.info("Author before update: {}", author);
 
         authorMapperForPartialUpdates.map(authorDTO, author);

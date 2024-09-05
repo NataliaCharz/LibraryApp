@@ -13,9 +13,6 @@ import com.bookcase.demo.repository.AuthorRepository;
 import com.bookcase.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -106,6 +103,6 @@ public class BookService {
         List<Author> authorList = bookList.stream()
                 .map(Book::getAuthor)
                 .collect(Collectors.toList());
-        return authorMapper.mapAuthorToDtoList(authorList);
+        return authorMapper.mapAuthorToDTOList(authorList);
     }
 }

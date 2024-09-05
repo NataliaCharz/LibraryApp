@@ -19,13 +19,13 @@ public class AuthorController {
     //wszyscy autorzy
     @GetMapping()
     public List<AuthorDTO> getAuthors(){
-        return authorMapper.mapAuthorToDtoList(authorService.getAllAuthors());
+        return authorMapper.mapAuthorToDTOList(authorService.getAllAuthors());
     }
 
     //wszyscy autorzy z ksiazkami
     @GetMapping("/books")
     public List<AuthorDTO> getAuthorsWithBooks() {
-            return authorMapper.mapAuthorToDtoList(authorService.getAuthorsWithBooks());
+            return authorMapper.mapAuthorToDTOList(authorService.getAuthorsWithBooks());
     }
 
     //autor wyszukiwany po id
@@ -37,7 +37,7 @@ public class AuthorController {
     //wszyscy autorzy ktorzy zyja lub nie
     @GetMapping("/alive")
     public List<AuthorDTO> getAuthorsDeadOrAlive(@RequestParam(name = "isAlive") Boolean isAlive){
-        return authorMapper.mapAuthorToDtoList(authorService.getAuthorsDeadOrALive(isAlive));
+        return authorMapper.mapAuthorToDTOList(authorService.getAuthorsDeadOrALive(isAlive));
     }
 
     @DeleteMapping("/{id}")
@@ -45,7 +45,7 @@ public class AuthorController {
         authorService.deleteAuthor(id);
     }
 
-    @PostMapping()
+    @PostMapping("/add")
     public void addNewAuthor(@RequestBody AuthorDTO authorDTO) {
         authorService.saveAuthor(authorMapper.mapAuthorDTOtoAuthor(authorDTO));
     }
@@ -56,9 +56,10 @@ public class AuthorController {
     }
 
     @PatchMapping("/{id}")
-    public AuthorDTO partialUpdateAlive2(@RequestParam(name="id") Integer id, @RequestBody AuthorDTO authorDTO){
-        return authorService.partialUpadateAuthor(id, authorDTO);
+    public AuthorDTO partialUpdateAlive(@RequestParam(name="id") Integer id, @RequestBody AuthorDTO authorDTO){
+        return authorService.partialUpdateAuthor(id, authorDTO);
     }
 
 
 }
+

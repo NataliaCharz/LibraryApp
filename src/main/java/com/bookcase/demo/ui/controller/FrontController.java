@@ -34,18 +34,6 @@ public class FrontController {
         return "home";
     }
 
-//    @GetMapping("/new-form")
-//    public String showNewBookForm(Model model){
-//        return "newForm" +
-//                "";
-//    }
-
-    @GetMapping("/authors")
-    public String getAuthors(Model model) {
-        model.addAttribute("authors",authorMapper.mapAuthorToDtoList(authorService.getAllAuthors()));
-        return "authors";
-    }
-
     @GetMapping("/books")
     public String getBooks(Model model){
         model.addAttribute("books",bookMapper.mapBookToDtoList(bookService.getAllBooks()));
