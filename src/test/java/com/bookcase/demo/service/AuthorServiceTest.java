@@ -4,16 +4,13 @@ import com.bookcase.demo.dto.AuthorSex;
 import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.exception.AuthorNotFoundException;
 import com.bookcase.demo.repository.AuthorRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +45,7 @@ public class AuthorServiceTest {
 
         //when
         AuthorNotFoundException exception = assertThrows(AuthorNotFoundException.class,
-                () -> authorService.getAuthorById(authorId));
+                () -> authorService.getAuthorByIdService(authorId));
         //then
         assertEquals("Author not found with id: 90",exception.getMessage());
     }

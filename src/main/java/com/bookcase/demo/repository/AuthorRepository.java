@@ -25,4 +25,6 @@ public interface AuthorRepository extends JpaRepository<Author, Integer> {
             LEFT JOIN FETCH author.books
             """)
     Page<Author> findAllWithBooksByPage(Pageable pageable);
+
+    List<Author> findBySurnameContainingIgnoreCase(String surname);
 }

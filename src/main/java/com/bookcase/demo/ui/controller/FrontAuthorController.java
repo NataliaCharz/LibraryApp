@@ -8,10 +8,7 @@ import com.bookcase.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/front-authors")
@@ -24,8 +21,14 @@ public class FrontAuthorController {
 
     @GetMapping("/authors")
     public String showGetAuthors(Model model) {
-        model.addAttribute("authors",authorMapper.mapAuthorToDTOList(authorService.getAllAuthors()));
+        model.addAttribute("authors",authorMapper.mapAuthorToDTOList(authorService.getAllAuthorsService()));
         return "authors";
+    }
+
+    @GetMapping("/books/{surname}")
+    public String showBooks(Model model, @PathVariable(name="surname") String surname){
+        model.addAttribute("books", authorService.getBooksByAuthorSurname(surname));
+        return "booksFromAuthors";
     }
 
     @GetMapping("/add-author")
@@ -37,7 +40,7 @@ public class FrontAuthorController {
 
     @PostMapping("/add-author")
     public String showSaveAuthor(@ModelAttribute("author") Author author) {
-        authorService.saveAuthor(author);
+        authorService.saveAuthorService(author);
         return "savedSuccess";
     }
 
