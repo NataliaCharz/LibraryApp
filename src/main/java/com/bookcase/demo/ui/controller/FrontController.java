@@ -1,6 +1,5 @@
 package com.bookcase.demo.ui.controller;
 
-import com.bookcase.demo.controller.AuthorController;
 import com.bookcase.demo.mapper.AuthorMapperMapStructImpl;
 import com.bookcase.demo.mapper.BookMapperImpl;
 import com.bookcase.demo.service.AuthorService;
@@ -10,14 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Arrays;
 
 @Controller
 @RequestMapping("/home")
 @RequiredArgsConstructor
-//@ApiIgnore
 public class FrontController {
     private final AuthorMapperMapStructImpl authorMapper;
     private final AuthorService authorService;
