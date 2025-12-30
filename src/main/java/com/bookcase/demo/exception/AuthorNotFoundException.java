@@ -4,7 +4,7 @@ public class AuthorNotFoundException extends RuntimeException{
 
     private static String ERROR_MESSAGE = "Author not found with id: ";
 
-    public AuthorNotFoundException(Integer id){
+    public AuthorNotFoundException(Long id){
         super(ERROR_MESSAGE + id);
     }
 

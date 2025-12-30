@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/books")
+@RequestMapping("api/books")
 public class BookController {
 
     private final BookService bookService;
@@ -32,7 +32,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public BookDTO getBookById(@PathVariable(name = "id") Integer id) {
+    public BookDTO getBookById(@PathVariable(name = "id") Long id) {
         return bookMapper.mapBookToDto(bookService.getById(id));
     }
 
@@ -49,17 +49,17 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public void addNewBook(@RequestBody BookDTO bookDTO, @RequestParam Integer authorId) {
+    public void addNewBook(@RequestBody BookDTO bookDTO, @RequestParam Long authorId) {
         bookService.createNewBook(bookMapper.mapBookFromDto(bookDTO), authorId);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteBookFromBookcase(@PathVariable("id") Integer id) {
+    public void deleteBookFromBookcase(@PathVariable("id") Long id) {
         bookService.deleteBookById(id);
     }
 
     @PutMapping("/change/{id}")
-    public BookDTO updateBook(@PathVariable("id") Integer id, @RequestBody BookDTO bookDTO) {
+    public BookDTO updateBook(@PathVariable("id") Long id, @RequestBody BookDTO bookDTO) {
         return bookService.updateBookDTO(id, bookDTO);
     }
 

@@ -41,8 +41,15 @@ public class AuthorService {
         return this.authorRepository.findAllWithBooks();
     }
 
+    //autorzy, których nazwisko zawiera podany ciąg liter
+    public List<Author> getAuthorsContainingCharactersInSurnameService(String character) {
+        return this.authorRepository.findAll().stream()
+                .filter(author -> author.getSurname().toLowerCase().contains(character.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
     //autor po id
-    public Author getAuthorByIdService(Integer id) throws AuthorNotFoundException {
+    public Author getAuthorByIdService(Long id) throws AuthorNotFoundException {
         return this.authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(id));
     }
@@ -65,7 +72,7 @@ public class AuthorService {
     }
 
     //usuń autora
-    public void deleteAuthorService(Integer id) {
+    public void deleteAuthorService(Long id) {
         Author authorToDelete = getAuthorByIdService(id);
         this.authorRepository.delete(authorToDelete);
     }
@@ -77,7 +84,7 @@ public class AuthorService {
     }
 
     //aktualizacja calego autora
-    public AuthorDTO updateAuthorService(Integer id, AuthorDTO authorDTO) {
+    public AuthorDTO updateAuthorService(Long id, AuthorDTO authorDTO) {
         Author authorToUpdate = getAuthorByIdService(id);
         authorMapper.mapAuthorDTOToAuthorInMemory(authorDTO, authorToUpdate);
         this.authorRepository.save(authorToUpdate);
@@ -86,7 +93,7 @@ public class AuthorService {
 
     //aktualizacja czesciowa autora
     @Transactional
-    public AuthorDTO partialUpdateAuthorService(Integer id, AuthorDTO authorDTO) {
+    public AuthorDTO partialUpdateAuthorService(Long id, AuthorDTO authorDTO) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
         log.info("Author before update: {}", author);
 
@@ -96,18 +103,5 @@ public class AuthorService {
 
         return authorMapper.mapAuthorToDTO(author);
     }
-
-//    public List<Author> findAllAuthorsBySurname(String surname){
-//        log.info("Received surname: {}", surname);
-//        List<Author> authorList = authorRepository.findAll();
-//        List<Author> fitList = new ArrayList<>();
-//
-//        authorList.forEach(author -> {
-//            if (author.getSurname().toLowerCase() == surname){
-//                fitList.add(author);
-//            }
-//        });
-//        return fitList;
-//    }
 }
 

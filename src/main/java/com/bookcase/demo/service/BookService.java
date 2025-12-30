@@ -37,7 +37,7 @@ public class BookService {
         return this.bookRepository.findAll();
     }
 
-    public Book getById(Integer id) {
+    public Book getById(Long id) {
         Optional<Book> bookFoundById = this.bookRepository.findById(id);
         if (!bookFoundById.isPresent()) {
             log.info("There is no book with id: {}", id);
@@ -49,18 +49,13 @@ public class BookService {
 
     public List<Book> getAllBooksStartsByCharacter(String character) {
         log.info("Received character: {}", character);
-        List<Book> bookList = bookRepository.findAll();
-        List<Book> fitList = new ArrayList<>();
-
-        bookList.forEach(book -> {
-            if (book.getTitle().toLowerCase().startsWith(character.toLowerCase())) {
-                fitList.add(book);
-            }
-        });
-        return fitList;
+        return bookRepository.findAll()
+                .stream()
+                .filter(b -> b.getTitle().toLowerCase().contains(character))
+                .collect(Collectors.toList());
     }
 
-    public void createNewBook(Book bookToSave, Integer authorId) {
+    public void createNewBook(Book bookToSave, Long authorId) {
         Optional<Author> author = this.authorRepository.findById(authorId);
         if (author.isPresent()) {
             bookToSave.setAuthor(author.get());
@@ -70,7 +65,7 @@ public class BookService {
         }
     }
 
-    public void deleteBookById(Integer id) {
+    public void deleteBookById(Long id) {
         Optional<Book> bookById = this.bookRepository.findById(id);
         if (!bookById.isPresent()) {
             log.info("There is no book with id: {}", id);
@@ -81,7 +76,7 @@ public class BookService {
         log.info("Book's been successfully removed");
     }
 
-    public BookDTO updateBookDTO(Integer id, BookDTO bookDTO) {
+    public BookDTO updateBookDTO(Long id, BookDTO bookDTO) {
         Optional<Book> bookToUpdateOptional = this.bookRepository.findById(id);
         if (bookToUpdateOptional.isEmpty()) {
             log.info("Book with this id: {} do not exist.", id);

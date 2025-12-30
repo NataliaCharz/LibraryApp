@@ -31,7 +31,7 @@ logging:
 library:
   baseUrl: "https://openlibrary.org"
   path: "/search.json"
-  fields: "title"
+  fields: "title, author_name"
 
 #hibernate:
 #  transaction:

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,7 +19,7 @@ public class Author {
     @Id
     @SequenceGenerator(name="author_id_seq",sequenceName="author_id_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "author_id_seq")
-    private Integer id;
+    private Long authorId;
 
     @Column(name="NAME")
     private String name;

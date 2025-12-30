@@ -8,10 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAllByTitleStartsWith(String title);
-
-    List<Book> findAllByAuthorIdIn(List<Integer> ids);
 
     List<Book> findByCategory(BookCategory category);
 
