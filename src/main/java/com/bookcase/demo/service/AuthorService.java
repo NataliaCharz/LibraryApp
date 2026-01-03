@@ -111,5 +111,11 @@ public class AuthorService {
                 .orElseThrow(() -> new AuthorNotFoundException(authorId))
                 .getBooks();
     }
+
+    public Long getAuthorsIdBySurname(String surname) {
+        return authorRepository.findBySurnameIgnoreCase(surname)
+                .map(Author::getId)
+                .orElseThrow(() -> new AuthorNotFoundException("No author found with surname containing: " + surname));
+    }
 }
 

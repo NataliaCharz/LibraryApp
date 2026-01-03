@@ -63,7 +63,7 @@ public class BookService {
             bookToSave.setAuthor(author.get());
             this.bookRepository.save(bookToSave);
         } else {
-            throw new AuthorNotFoundException(authorId);
+            throw new AuthorNotFoundException("Author not found with id: " + authorId);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.bookcase.demo.repository;
 
 import com.bookcase.demo.entity.Author;
+import org.springframework.beans.PropertyValues;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,5 +32,7 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
 
     @Query("SELECT a FROM Author a JOIN FETCH a.books WHERE a.id = :id")
     Optional<Author> findByIdWithBooks(@Param("id") Long id);
+
+    Optional<Author> findBySurnameIgnoreCase(String surname);
 
 }

@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,6 +27,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final MyUserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -65,14 +67,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/library/**").permitAll()
                         .requestMatchers("/api/books/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers("/api/authors/**").hasAnyAuthority("USER", "ADMIN")
-                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/admin/contact/send").hasAuthority("USER")
                         .requestMatchers("/api/user/**").hasAuthority("USER")
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(sm -> sm
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                )
-                .userDetailsService(userDetailsService);
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);;
         return http.build();
     }
 }

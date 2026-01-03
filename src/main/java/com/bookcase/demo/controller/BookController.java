@@ -56,8 +56,8 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public void addNewBook(@RequestBody BookDTO bookDTO, @RequestParam Long authorId) {
-        bookService.createNewBook(bookMapper.mapBookFromDto(bookDTO), authorId);
+    public void addNewBook(@RequestBody BookDTO bookDTO) {
+        bookService.createNewBook(bookMapper.mapBookFromDto(bookDTO), bookDTO.getAuthorId());
     }
 
     @DeleteMapping("/delete/{id}")

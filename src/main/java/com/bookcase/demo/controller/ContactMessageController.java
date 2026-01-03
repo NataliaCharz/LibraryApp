@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/contact")
+@RequestMapping("/api/admin/contact")
 @RequiredArgsConstructor
 public class ContactMessageController {
     private final ContactMessageService contactMessageService;
 
-    @PostMapping
-    public ContactMessage sendMessage(@RequestBody Map<String, String> payload) {
-        return contactMessageService.saveMessage(payload.get("name"), payload.get("email"), payload.get("message"));
+    @PostMapping("/send")
+    public ContactMessage sendMessage(@RequestBody ContactMessage msg) {
+        return contactMessageService.saveMessage(msg.getName(), msg.getEmail(), msg.getMessage());
     }
 
     @GetMapping

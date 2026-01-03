@@ -5,9 +5,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "contact_message")
 @Data
+@Entity
+@Table(name = "CONTACT_MESSAGE")
 public class ContactMessage {
 
     @Id

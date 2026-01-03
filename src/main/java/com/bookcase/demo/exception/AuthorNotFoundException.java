@@ -8,4 +8,8 @@ public class AuthorNotFoundException extends RuntimeException{
         super(ERROR_MESSAGE + id);
     }
 
+    public AuthorNotFoundException(String surname){
+        super(ERROR_MESSAGE + surname);
+    }
+
 }

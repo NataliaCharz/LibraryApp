@@ -3,6 +3,8 @@ package com.bookcase.demo.entity;
 import com.bookcase.demo.dto.AuthorSex;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +30,8 @@ public class Author {
     private String surname;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="SEX")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name="SEX", columnDefinition = "sex")
     private AuthorSex sex;
 
     @Column(name="DATE_OF_BIRTH")
