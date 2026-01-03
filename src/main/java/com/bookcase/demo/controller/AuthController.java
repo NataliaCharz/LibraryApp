@@ -5,6 +5,7 @@ import com.bookcase.demo.dto.LoginRequest;
 import com.bookcase.demo.entity.AppUser;
 import com.bookcase.demo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -37,7 +39,9 @@ public class AuthController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
-
+        HttpSession session = httpRequest.getSession(true);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         return ResponseEntity.ok(Map.of(
                 "username", userDetails.getUsername(),
@@ -46,6 +50,7 @@ public class AuthController {
                         .toList()
         ));
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody LoginRequest request) {

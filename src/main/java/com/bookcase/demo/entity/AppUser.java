@@ -22,8 +22,7 @@ public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long userId;
+    private Long id;
 
     @Column(name = "USER_NAME")
     private String userName;
@@ -36,7 +35,7 @@ public class AppUser implements UserDetails {
     @Column(name = "USER_ROLE", columnDefinition = "role_enum")
     private AppUserRole role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USER_BOOKS",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -44,7 +43,7 @@ public class AppUser implements UserDetails {
     )
     private Set<Book> userBooks = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USER_FAVORITE_BOOKS",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -52,7 +51,7 @@ public class AppUser implements UserDetails {
     )
     private Set<Book> favoriteBooks = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USER_WISHLIST_BOOKS",
             joinColumns = @JoinColumn(name = "USER_ID"),

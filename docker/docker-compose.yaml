@@ -7,13 +7,8 @@ services:
       - 5432:5432
     volumes:
       - ~/apps/postgres:/var/lib/postgresql/data
-#    volumes:
-#      - pgdata:/var/lib/postgresql/data
-#      - ./init-sql:/docker-entrypoint-initdb.d
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
       - POSTGRES_DB=library
 
-#volumes:
-#  pgdata:

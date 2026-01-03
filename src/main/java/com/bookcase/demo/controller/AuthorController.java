@@ -39,6 +39,11 @@ public class AuthorController {
         return authorMapper.mapAuthorToDTO(authorService.getAuthorByIdService(id));
     }
 
+    @GetMapping("/get-books-by-author-id/{id}")
+    public List<BookDTO> getBooksByAuthorId(@PathVariable(name = "id") Long id){
+        return bookMapper.mapBookToDtoList(authorService.getBooksByAuthorId(id));
+    }
+
     //ksiazki autora po nazwisku
     @GetMapping("/get-author-by-surname/{author}")
     public List<BookDTO> getBooksByAuthorSurname(@PathVariable(name = "author")String surname){

@@ -13,6 +13,7 @@ import com.bookcase.demo.repository.AuthorRepository;
 import com.bookcase.demo.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    @Qualifier("authorMapperMapStruct")
     private final AuthorMapperMapStruct authorMapper;
     private final BookMapper bookMapper;
     private static final int PAGE_SIZE = 20;

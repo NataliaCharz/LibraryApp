@@ -23,6 +23,13 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
 
+    @GetMapping()
+    public List<BookDTO> getAllBooks(){
+        return bookService.getAllBooks()
+                .stream()
+                .map(bookMapper::mapBookToDto).collect(Collectors.toList());
+    }
+
     @GetMapping("/search")
     public List<BookDTO> getBooks(@RequestParam String character) {
         return bookService.getAllBooksStartsByCharacter(character)

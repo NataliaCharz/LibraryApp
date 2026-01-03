@@ -21,8 +21,7 @@ public class LibraryService {
 
     public LibraryDTO getAllWrittenBooksByAuthor(String author) {
         String url = UriComponentsBuilder.fromUriString(libraryProperties.getPath())
-                .queryParam("q", author)
-                .queryParam("fields", libraryProperties.getFields())
+                .queryParam("author", author)
                 .build()
                 .toUriString();
 

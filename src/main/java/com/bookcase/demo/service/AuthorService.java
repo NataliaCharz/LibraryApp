@@ -12,6 +12,7 @@ import com.bookcase.demo.repository.AuthorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,6 +27,7 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorMapperForPartialUpdates authorMapperForPartialUpdates;
+    @Qualifier("authorMapperMapStruct")
     private final AuthorMapperMapStruct authorMapper;
     private final BookMapper bookMapper;
 
@@ -102,6 +104,12 @@ public class AuthorService {
         log.info("Author after update: {}", author);
 
         return authorMapper.mapAuthorToDTO(author);
+    }
+
+    public List<Book> getBooksByAuthorId(Long authorId) {
+        return authorRepository.findByIdWithBooks(authorId)
+                .orElseThrow(() -> new AuthorNotFoundException(authorId))
+                .getBooks();
     }
 }
 
