@@ -30,65 +30,65 @@ public class AppUserController {
     }
 
     @PostMapping("/books/add/{bookId}")
-    public void addBookToUserBooks(@AuthenticationPrincipal Long userId, @PathVariable Long bookId) {
-        appUserService.addUserBook(userId,
+    public void addBookToUserBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
+        appUserService.addUserBook(user.getId(),
                 bookService.getById(bookId));
     }
 
     @DeleteMapping("/books/delete/{bookId}")
-    public void deleteBookFromUserBooks(@AuthenticationPrincipal Long userId, @PathVariable Long bookId) {
-        appUserService.deleteUserBook(userId, bookId);
+    public void deleteBookFromUserBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
+        appUserService.deleteUserBook(user.getId(), bookId);
     }
 
     @GetMapping("/books/favorite")
-    public Set<BookDTO> getUserFavoriteBooks(@AuthenticationPrincipal Long userId) {
-        return appUserService.getUserFavoriteBooks(userId)
+    public Set<BookDTO> getUserFavoriteBooks(@AuthenticationPrincipal AppUser user) {
+        return appUserService.getUserFavoriteBooks(user.getId())
                 .stream().map(bookMapper::mapBookToDto)
                 .collect(java.util.stream.Collectors.toSet());
     }
 
     @PostMapping("/books/favorite/add/{bookId}")
-    public void addBookToUserFavoriteBooks(@AuthenticationPrincipal Long userId, @PathVariable Long bookId) {
-        appUserService.addUserFavoriteBook(userId,
+    public void addBookToUserFavoriteBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
+        appUserService.addUserFavoriteBook(user.getId(),
                 bookService.getById(bookId));
     }
 
     @DeleteMapping("/books/favorite/delete/{bookId}")
-    public void deleteBookFromUserFavoriteBooks(@AuthenticationPrincipal Long userId, @PathVariable Long bookId) {
-        appUserService.deleteUserFavoriteBook(userId, bookId);
+    public void deleteBookFromUserFavoriteBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
+        appUserService.deleteUserFavoriteBook(user.getId(), bookId);
     }
 
     @GetMapping("/books/wishlist")
-    public Set<BookDTO> getUserWishlistBooks(@AuthenticationPrincipal Long userId) {
-        return appUserService.getUserWishListBooks(userId)
+    public Set<BookDTO> getUserWishlistBooks(@AuthenticationPrincipal AppUser user) {
+        return appUserService.getUserWishListBooks(user.getId())
                 .stream().map(bookMapper::mapBookToDto)
                 .collect(java.util.stream.Collectors.toSet());
     }
 
-    @PostMapping("/books/wishlist/books/wishlist/add/{bookId}")
-    public void addBookToUserWishlistBooks(@AuthenticationPrincipal Long userId, @PathVariable Long bookId) {
-        appUserService.addUserWishListBook(userId,
+    @PostMapping("/books/wishlist/add/{bookId}")
+    public void addBookToUserWishlistBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
+        appUserService.addUserWishListBook(user.getId(),
                 bookService.getById(bookId));
     }
 
-    @DeleteMapping("/books/wishlist/books/wishlist/delete/{bookId}")
-    public void deleteBookFromUserWishlistBooks(@AuthenticationPrincipal Long userId, @PathVariable Long bookId) {
-        appUserService.deleteUserWishListBook(userId, bookId);
+    @DeleteMapping("/books/wishlist/delete/{bookId}")
+    public void deleteBookFromUserWishlistBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
+        appUserService.deleteUserWishListBook(user.getId(), bookId);
     }
 
     @GetMapping("/books/wishlist/read-status")
-    public Boolean getReadStatus(@RequestParam Long userId, @RequestParam Long bookId) {
-        return wishlistService.checkIfRead(userId, bookId);
+    public Boolean getReadStatus(@RequestParam AppUser user, @RequestParam Long bookId) {
+        return wishlistService.checkIfRead(user.getId(), bookId);
     }
 
     @PostMapping("/books/wishlist/mark-read")
-    public void markAsRead(@RequestParam Long userId, @RequestParam Long bookId) {
-        wishlistService.markAsRead(userId, bookId);
+    public void markAsRead(@RequestParam AppUser user, @RequestParam Long bookId) {
+        wishlistService.markAsRead(user.getId(), bookId);
     }
 
     @PostMapping("/books/wishlist/mark-unread")
-    public void markAsUnread(@RequestParam Long userId, @RequestParam Long bookId) {
-        wishlistService.markAsUnread(userId, bookId);
+    public void markAsUnread(@RequestParam AppUser user, @RequestParam Long bookId) {
+        wishlistService.markAsUnread(user.getId(), bookId);
     }
 
 }

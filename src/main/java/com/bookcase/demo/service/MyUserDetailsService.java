@@ -1,5 +1,6 @@
 package com.bookcase.demo.service;
 
+import com.bookcase.demo.entity.AppUser;
 import com.bookcase.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,5 +19,10 @@ public class MyUserDetailsService implements UserDetailsService {
         return userRepository
                 .findUserByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    public AppUser loadAppUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByUserName(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 }

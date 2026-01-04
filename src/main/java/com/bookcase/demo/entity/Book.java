@@ -41,5 +41,4 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="AUTHOR_ID", nullable = false)
     private Author author;
-
 }

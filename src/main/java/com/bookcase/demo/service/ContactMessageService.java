@@ -23,4 +23,8 @@ public class ContactMessageService {
     public List<ContactMessage> getAllMessages() {
         return contactMessageRepository.findAll();
     }
+
+    public void deleteMessageById(Long id) {
+        contactMessageRepository.findById(id).ifPresent(contactMessageRepository::delete);
+    }
 }

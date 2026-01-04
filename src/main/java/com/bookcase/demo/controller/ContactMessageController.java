@@ -1,15 +1,17 @@
 package com.bookcase.demo.controller;
 
+import com.bookcase.demo.entity.AppUser;
 import com.bookcase.demo.entity.ContactMessage;
 import com.bookcase.demo.service.ContactMessageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin/contact")
+@RequestMapping("/api/contact")
 @RequiredArgsConstructor
 public class ContactMessageController {
     private final ContactMessageService contactMessageService;
@@ -22,5 +24,11 @@ public class ContactMessageController {
     @GetMapping
     public List<ContactMessage> getMessages() {
         return contactMessageService.getAllMessages();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteMessage(@PathVariable Long id) {
+        contactMessageService.deleteMessageById(id);
+
     }
 }

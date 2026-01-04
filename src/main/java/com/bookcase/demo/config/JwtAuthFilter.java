@@ -1,7 +1,7 @@
 package com.bookcase.demo.config;
 
+import com.bookcase.demo.entity.AppUser;
 import com.bookcase.demo.service.MyUserDetailsService;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-
         String username = null;
         String token = null;
 
@@ -42,20 +41,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Claims claims = jwtUtil.extractClaims(token);
+            AppUser user = userDetailsService.loadAppUserByUsername(username);
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(
-                            username,
+                            user,
                             null,
-                            userDetailsService.loadUserByUsername(username).getAuthorities()
+                            user.getAuthorities()
                     );
 
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-
         filterChain.doFilter(request, response);
     }
+
 }
 
