@@ -12,6 +12,7 @@ import com.bookcase.demo.repository.AuthorRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,6 +27,7 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorMapperForPartialUpdates authorMapperForPartialUpdates;
+    @Qualifier("authorMapperMapStruct")
     private final AuthorMapperMapStruct authorMapper;
     private final BookMapper bookMapper;
 
@@ -41,8 +43,15 @@ public class AuthorService {
         return this.authorRepository.findAllWithBooks();
     }
 
+    //autorzy, których nazwisko zawiera podany ciąg liter
+    public List<Author> getAuthorsContainingCharactersInSurnameService(String character) {
+        return this.authorRepository.findAll().stream()
+                .filter(author -> author.getSurname().toLowerCase().contains(character.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
     //autor po id
-    public Author getAuthorByIdService(Integer id) throws AuthorNotFoundException {
+    public Author getAuthorByIdService(Long id) throws AuthorNotFoundException {
         return this.authorRepository.findById(id)
                 .orElseThrow(() -> new AuthorNotFoundException(id));
     }
@@ -65,7 +74,7 @@ public class AuthorService {
     }
 
     //usuń autora
-    public void deleteAuthorService(Integer id) {
+    public void deleteAuthorService(Long id) {
         Author authorToDelete = getAuthorByIdService(id);
         this.authorRepository.delete(authorToDelete);
     }
@@ -77,7 +86,7 @@ public class AuthorService {
     }
 
     //aktualizacja calego autora
-    public AuthorDTO updateAuthorService(Integer id, AuthorDTO authorDTO) {
+    public AuthorDTO updateAuthorService(Long id, AuthorDTO authorDTO) {
         Author authorToUpdate = getAuthorByIdService(id);
         authorMapper.mapAuthorDTOToAuthorInMemory(authorDTO, authorToUpdate);
         this.authorRepository.save(authorToUpdate);
@@ -86,7 +95,7 @@ public class AuthorService {
 
     //aktualizacja czesciowa autora
     @Transactional
-    public AuthorDTO partialUpdateAuthorService(Integer id, AuthorDTO authorDTO) {
+    public AuthorDTO partialUpdateAuthorService(Long id, AuthorDTO authorDTO) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
         log.info("Author before update: {}", author);
 
@@ -97,17 +106,16 @@ public class AuthorService {
         return authorMapper.mapAuthorToDTO(author);
     }
 
-//    public List<Author> findAllAuthorsBySurname(String surname){
-//        log.info("Received surname: {}", surname);
-//        List<Author> authorList = authorRepository.findAll();
-//        List<Author> fitList = new ArrayList<>();
-//
-//        authorList.forEach(author -> {
-//            if (author.getSurname().toLowerCase() == surname){
-//                fitList.add(author);
-//            }
-//        });
-//        return fitList;
-//    }
+    public List<Book> getBooksByAuthorId(Long authorId) {
+        return authorRepository.findByIdWithBooks(authorId)
+                .orElseThrow(() -> new AuthorNotFoundException(authorId))
+                .getBooks();
+    }
+
+    public Long getAuthorsIdBySurname(String surname) {
+        return authorRepository.findBySurnameIgnoreCase(surname)
+                .map(Author::getId)
+                .orElseThrow(() -> new AuthorNotFoundException("No author found with surname containing: " + surname));
+    }
 }
 

@@ -41,7 +41,7 @@ public class AuthorServiceTest {
     @Test
     public void getAuthorByIdWillThrowExceptionWhenAuthorDoesNotExist() {
         //given
-        int authorId = 90;
+        Long authorId = 90L;
 
         //when
         AuthorNotFoundException exception = assertThrows(AuthorNotFoundException.class,

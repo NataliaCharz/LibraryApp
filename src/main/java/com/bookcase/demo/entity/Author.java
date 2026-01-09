@@ -3,9 +3,10 @@ package com.bookcase.demo.entity;
 import com.bookcase.demo.dto.AuthorSex;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class Author {
     @Id
     @SequenceGenerator(name="author_id_seq",sequenceName="author_id_seq", allocationSize = 1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "author_id_seq")
-    private Integer id;
+    private Long id;
 
     @Column(name="NAME")
     private String name;
@@ -29,7 +30,8 @@ public class Author {
     private String surname;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="SEX")
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name="SEX", columnDefinition = "sex")
     private AuthorSex sex;
 
     @Column(name="DATE_OF_BIRTH")
