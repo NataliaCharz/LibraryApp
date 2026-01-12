@@ -32,7 +32,7 @@ public class AppUserController {
     @PostMapping("/books/add/{bookId}")
     public void addBookToUserBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
         appUserService.addUserBook(user.getId(),
-                bookService.getById(bookId));
+                bookService.getBookByIdService(bookId));
     }
 
     @DeleteMapping("/books/delete/{bookId}")
@@ -50,7 +50,7 @@ public class AppUserController {
     @PostMapping("/books/favorite/add/{bookId}")
     public void addBookToUserFavoriteBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
         appUserService.addUserFavoriteBook(user.getId(),
-                bookService.getById(bookId));
+                bookService.getBookByIdService(bookId));
     }
 
     @DeleteMapping("/books/favorite/delete/{bookId}")
@@ -68,7 +68,7 @@ public class AppUserController {
     @PostMapping("/books/wishlist/add/{bookId}")
     public void addBookToUserWishlistBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
         appUserService.addUserWishListBook(user.getId(),
-                bookService.getById(bookId));
+                bookService.getBookByIdService(bookId));
     }
 
     @DeleteMapping("/books/wishlist/delete/{bookId}")

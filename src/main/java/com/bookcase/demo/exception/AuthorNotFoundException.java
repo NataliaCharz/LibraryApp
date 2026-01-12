@@ -2,7 +2,7 @@ package com.bookcase.demo.exception;
 
 public class AuthorNotFoundException extends RuntimeException{
 
-    private static String ERROR_MESSAGE = "Author not found with id: ";
+    private static final String ERROR_MESSAGE = "Author not found with id: ";
 
     public AuthorNotFoundException(Long id){
         super(ERROR_MESSAGE + id);

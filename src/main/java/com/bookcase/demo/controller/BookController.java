@@ -21,15 +21,15 @@ public class BookController {
     private final BookMapper bookMapper;
 
     @GetMapping()
-    public List<BookDTO> getAllBooks(){
-        return bookService.getAllBooks()
+    public List<BookDTO> getBooks(){
+        return bookService.getBooksService()
                 .stream()
                 .map(bookMapper::mapBookToDto).collect(Collectors.toList());
     }
 
     @GetMapping("/search")
-    public List<BookDTO> getBooks(@RequestParam String character) {
-        return bookService.getAllBooksStartsByCharacter(character)
+    public List<BookDTO> getBooksContainingCharacters(@RequestParam String character) {
+        return bookService.getBooksContainingCharactersService(character)
                 .stream()
                 .map(bookMapper::mapBookToDto)
                 .collect(Collectors.toList());
@@ -37,34 +37,34 @@ public class BookController {
 
     @GetMapping("/{id}")
     public BookDTO getBookById(@PathVariable(name = "id") Long id) {
-        return bookMapper.mapBookToDto(bookService.getById(id));
+        return bookMapper.mapBookToDto(bookService.getBookByIdService(id));
     }
 
     @GetMapping("/author")
     public List<AuthorDTO> getBookAuthor(@RequestParam String title) {
-        return this.bookService.getBookAuthor(title);
+        return this.bookService.getBookAuthorService(title);
     }
 
     @GetMapping("/find-by-category/{category}")
     public List<BookDTO> getBookByCategory(@PathVariable(name = "category") BookCategory category) {
-        return bookService.getByCategory(category).stream()
+        return bookService.getBookByCategoryService(category).stream()
                 .map(bookMapper::mapBookToDto)
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/add")
     public void addNewBook(@RequestBody BookDTO bookDTO) {
-        bookService.createNewBook(bookMapper.mapBookFromDto(bookDTO), bookDTO.getAuthorId());
+        bookService.createNewBookService(bookMapper.mapBookFromDto(bookDTO), bookDTO.getAuthorId());
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteBookFromBookcase(@PathVariable("id") Long id) {
-        bookService.deleteBookById(id);
+    public void deleteBook(@PathVariable("id") Long id) {
+        bookService.deleteBookByIdService(id);
     }
 
     @PutMapping("/change/{id}")
     public BookDTO updateBook(@PathVariable("id") Long id, @RequestBody BookDTO bookDTO) {
-        return bookService.updateBookDTO(id, bookDTO);
+        return bookService.updateBookDTOService(id, bookDTO);
     }
 
 }

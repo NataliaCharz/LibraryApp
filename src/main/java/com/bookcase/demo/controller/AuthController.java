@@ -4,9 +4,12 @@ import com.bookcase.demo.config.JwtUtil;
 import com.bookcase.demo.dto.AppUserRole;
 import com.bookcase.demo.entity.AppUser;
 import com.bookcase.demo.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +26,7 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String username = body.get("username");
         String password = body.get("password");
 
@@ -39,15 +42,24 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole().toString());
 
+        ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
         return ResponseEntity.ok(Map.of(
-                "token", token,
                 "username", user.getUsername(),
                 "role", user.getRole().toString()
         ));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
+    public ResponseEntity<?> register(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String username = body.get("username");
         String password = body.get("password");
 
@@ -63,34 +75,47 @@ public class AuthController {
         userRepository.save(user);
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole().toString());
+        ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
+        response.addHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(Map.of(
-                "token", token,
                 "username", user.getUsername(),
                 "role", user.getRole().toString()
         ));
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> me(@RequestHeader(value = "Authorization", required = false) String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing token");
+    public ResponseEntity<?> me(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
 
-        String token = authHeader.substring(7);
-        try {
-            String username = jwtUtil.extractUsername(token);
-            String role = jwtUtil.extractRole(token);
-
-            return ResponseEntity.ok(Map.of("username", username, "role", role));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
-        }
+        AppUser user = (AppUser) authentication.getPrincipal();
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername(),
+                "role", user.getRole().toString()
+        ));
     }
 
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Strict")
+                .build();
+
+        response.addHeader("Set-Cookie", cookie.toString());
+
         return ResponseEntity.ok(Map.of("message", "Logged out"));
     }
 }

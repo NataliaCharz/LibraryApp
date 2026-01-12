@@ -1,5 +1,6 @@
 package com.bookcase.demo.service;
 
+import com.bookcase.demo.controller.NotificationController;
 import com.bookcase.demo.dto.AuthorDTO;
 import com.bookcase.demo.entity.Author;
 import com.bookcase.demo.entity.Book;
@@ -16,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,15 +33,16 @@ public class BookService {
     @Qualifier("authorMapperMapStruct")
     private final AuthorMapperMapStruct authorMapper;
     private final BookMapper bookMapper;
-    private static final int PAGE_SIZE = 20;
+    private final NotificationController notificationController;
+    private final MqttService mqttService;
 
-    public List<Book> getAllBooks() {
+    public List<Book> getBooksService() {
         return this.bookRepository.findAll();
     }
 
-    public Book getById(Long id) {
+    public Book getBookByIdService(Long id) {
         Optional<Book> bookFoundById = this.bookRepository.findById(id);
-        if (!bookFoundById.isPresent()) {
+        if (bookFoundById.isEmpty()) {
             log.info("There is no book with id: {}", id);
             throw new BookNotFoundException();
         } else {
@@ -49,7 +50,7 @@ public class BookService {
         }
     }
 
-    public List<Book> getAllBooksStartsByCharacter(String character) {
+    public List<Book> getBooksContainingCharactersService(String character) {
         log.info("Received character: {}", character);
         return bookRepository.findAll()
                 .stream()
@@ -57,57 +58,59 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public void createNewBook(Book bookToSave, Long authorId) {
+    public void createNewBookService(Book bookToSave, Long authorId) {
         Optional<Author> author = this.authorRepository.findById(authorId);
         if (author.isPresent()) {
             bookToSave.setAuthor(author.get());
             this.bookRepository.save(bookToSave);
+            notificationController.sendNotification("New book added: " + bookToSave.getTitle());
+            mqttService.publish("New book added: " + bookToSave.getTitle());
+            log.info("Book's been successfully saved");
         } else {
             throw new AuthorNotFoundException("Author not found with id: " + authorId);
         }
     }
 
-    public void deleteBookById(Long id) {
+    public void deleteBookByIdService(Long id) {
         Optional<Book> bookById = this.bookRepository.findById(id);
-        if (!bookById.isPresent()) {
+        if (bookById.isEmpty()) {
             log.info("There is no book with id: {}", id);
             throw new BookNotFoundException();
         }
         Book bookToDelete = bookById.get();
         this.bookRepository.delete(bookToDelete);
+        notificationController.sendNotification("Book removed: " + bookToDelete.getTitle());
         log.info("Book's been successfully removed");
     }
 
-    public BookDTO updateBookDTO(Long id, BookDTO bookDTO) {
+    public BookDTO updateBookDTOService(Long id, BookDTO bookDTO) {
         Optional<Book> bookToUpdateOptional = this.bookRepository.findById(id);
         if (bookToUpdateOptional.isEmpty()) {
             log.info("Book with this id: {} do not exist.", id);
             throw new BookNotFoundException();
         }
         Book bookToUpdate = bookToUpdateOptional.get();
-
         if(bookDTO.getTitle() != null) {
             bookToUpdate.setTitle(bookDTO.getTitle());
         }
-
         if(bookDTO.getPages() != null) {
             bookToUpdate.setPages(bookDTO.getPages());
         }
-
         if(bookDTO.getCategory() != null) {
             bookToUpdate.setCategory(bookDTO.getCategory());
         }
-
         this.bookRepository.save(bookToUpdate);
+        notificationController.sendNotification("Book updated: " + bookToUpdate.getTitle());
+        log.info("Book's been successfully updated");
         return bookMapper.mapBookToDto(bookToUpdate);
     }
 
-    public List<Book> getByCategory(BookCategory category) {
+    public List<Book> getBookByCategoryService(BookCategory category) {
         return this.bookRepository.findByCategory(category);
     }
 
 
-    public List<AuthorDTO> getBookAuthor(String title) {
+    public List<AuthorDTO> getBookAuthorService(String title) {
         List<Book> bookList = this.bookRepository.findAllBooksByTitle(title);
         List<Author> authorList = bookList.stream()
                 .map(Book::getAuthor)
