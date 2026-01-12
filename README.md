@@ -4,6 +4,9 @@ My Library is a web application built with Java Spring Boot, allowing users to m
 ## Technologies Used
 - Java Spring Boot
 - Gradle
-- Thymeleaf / HTML / CSS
 - H2 / PostgreSQL
 - Docker
+- JWT
+## Frontend written in React
+Fronted can be found https://github.com/NataliaCharz/Library-frontend
+
