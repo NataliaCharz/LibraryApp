@@ -35,3 +35,6 @@ out/
 ### VS Code ###
 .vscode/
 /test.txt
+
+resources/keystore.p12
+resources/application.yml

@@ -22,18 +22,16 @@ public class AuthorController {
     private final AuthorMapperMapStruct authorMapper;
     private final BookMapper bookMapper;
 
-    //wszyscy autorzy
     @GetMapping()
     public List<AuthorDTO> getAuthors(){
         return authorMapper.mapAuthorToDTOList(authorService.getAllAuthorsService());
     }
 
-    //wszyscy autorzy z ksiazkami
     @GetMapping("/books")
     public List<AuthorDTO> getAuthorsWithBooks() {
             return authorMapper.mapAuthorToDTOList(authorService.getAuthorsWithBooksService());
     }
-    //autor wyszukiwany po id
+
     @GetMapping("/{id}")
     public AuthorDTO getAuthorById(@PathVariable(name = "id") Long id) {
         return authorMapper.mapAuthorToDTO(authorService.getAuthorByIdService(id));
@@ -41,51 +39,48 @@ public class AuthorController {
 
     @GetMapping("/search/{surname}")
     public Long getAuthorsIdBySurname(@PathVariable String surname){
-        return authorService.getAuthorsIdBySurname(surname);
+        return authorService.getAuthorsIdBySurnameService(surname);
     }
 
     @GetMapping("/get-books-by-author-id/{id}")
     public List<BookDTO> getBooksByAuthorId(@PathVariable(name = "id") Long id){
-        return bookMapper.mapBookToDtoList(authorService.getBooksByAuthorId(id));
+        return bookMapper.mapBookToDtoList(authorService.getBooksByAuthorIdService(id));
     }
 
-    //ksiazki autora po nazwisku
     @GetMapping("/get-author-by-surname/{author}")
     public List<BookDTO> getBooksByAuthorSurname(@PathVariable(name = "author")String surname){
-        return authorService.getBooksByAuthorSurname(surname);
+        return authorService.getBooksByAuthorSurnameService(surname);
     }
 
-    //wszyscy autorzy ktorzy zyja lub nie
+    @GetMapping("/search")
+    public List<AuthorDTO> getAuthorsContainingCharactersInSurname(@RequestParam(name = "character") String character){
+        return authorMapper.mapAuthorToDTOList(authorService.getAuthorsContainingCharactersInSurnameService(character));
+    }
+
     @GetMapping("/alive")
     public List<AuthorDTO> getAuthorsDeadOrAlive(@RequestParam(name = "isAlive") Boolean isAlive){
         return authorMapper.mapAuthorToDTOList(authorService.getAuthorsDeadOrALiveService(isAlive));
     }
 
-    //usun autora
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteAuthorById(@PathVariable(name = "id") Long id) {
         authorService.deleteAuthorService(id);
     }
 
-    //dodaj autora
     @PostMapping("/add")
     public void addNewAuthor(@RequestBody AuthorDTO authorDTO) {
         authorService.saveAuthorService(authorMapper.mapAuthorDTOtoAuthor(authorDTO));
     }
 
-    //aktualizacja calego autora
     @PutMapping("/{id}")
     public AuthorDTO updateAuthorById(@RequestParam(name = "id") Long id, @RequestBody AuthorDTO authorDTO) {
         return authorService.updateAuthorService(id, authorDTO);
     }
 
-    //aktualizacja czesciowa autora
     @PatchMapping("/{id}")
     public AuthorDTO partialUpdateAlive(@RequestParam(name="id") Long id, @RequestBody AuthorDTO authorDTO){
         return authorService.partialUpdateAuthorService(id, authorDTO);
     }
-
-
 }
 

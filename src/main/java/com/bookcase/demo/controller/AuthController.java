@@ -29,29 +29,23 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String username = body.get("username");
         String password = body.get("password");
-
         Optional<AppUser> userOpt = userRepository.findUserByUserName(username);
         if (userOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-
         AppUser user = userOpt.get();
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
-
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole().toString());
-
         ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", token)
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
-
         response.addHeader("Set-Cookie", cookie.toString());
-
         return ResponseEntity.ok(Map.of(
                 "username", user.getUsername(),
                 "role", user.getRole().toString()
@@ -62,28 +56,23 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody Map<String, String> body, HttpServletResponse response) {
         String username = body.get("username");
         String password = body.get("password");
-
         if (userRepository.existsByUserName(username)) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
-
         AppUser user = new AppUser();
         user.setUserName(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(AppUserRole.USER);
-
         userRepository.save(user);
-
         String token = jwtUtil.generateToken(user.getUsername(), user.getRole().toString());
         ResponseCookie cookie = ResponseCookie.from("JWT_TOKEN", token)
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
         response.addHeader("Set-Cookie", cookie.toString());
-
         return ResponseEntity.ok(Map.of(
                 "username", user.getUsername(),
                 "role", user.getRole().toString()
@@ -95,14 +84,12 @@ public class AuthController {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
-
         AppUser user = (AppUser) authentication.getPrincipal();
         return ResponseEntity.ok(Map.of(
                 "username", user.getUsername(),
                 "role", user.getRole().toString()
         ));
     }
-
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
@@ -111,11 +98,9 @@ public class AuthController {
                 .secure(true)
                 .path("/")
                 .maxAge(0)
-                .sameSite("Strict")
+                .sameSite("None")
                 .build();
-
         response.addHeader("Set-Cookie", cookie.toString());
-
         return ResponseEntity.ok(Map.of("message", "Logged out"));
     }
 }

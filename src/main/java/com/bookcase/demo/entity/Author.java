@@ -42,8 +42,6 @@ public class Author {
 
     @ToString.Exclude
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "author")
-//    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-//    @JoinColumn (name="authorId", updatable = false, insertable = false)
     private List<Book> books;
 
 }

@@ -53,7 +53,7 @@ public class AuthorService {
                 .orElseThrow(() -> new AuthorNotFoundException(id));
     }
 
-    public List<BookDTO> getBooksByAuthorSurname(String surname){
+    public List<BookDTO> getBooksByAuthorSurnameService(String surname){
         List<Author> authorList = this.authorRepository.findBySurnameContainingIgnoreCase(surname);
         List<Book> bookList = authorList.stream()
                 .flatMap(author -> author.getBooks().stream())
@@ -71,17 +71,20 @@ public class AuthorService {
     public void deleteAuthorService(Long id) {
         Author authorToDelete = getAuthorByIdService(id);
         this.authorRepository.delete(authorToDelete);
+        notificationController.sendNotification("Author deleted: " + authorToDelete.getSurname());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     public void saveAuthorService(Author author) {
         this.authorRepository.save(author);
+        notificationController.sendNotification("New author added: " + author.getSurname());
     }
 
     public AuthorDTO updateAuthorService(Long id, AuthorDTO authorDTO) {
         Author authorToUpdate = getAuthorByIdService(id);
         authorMapper.mapAuthorDTOToAuthorInMemory(authorDTO, authorToUpdate);
         this.authorRepository.save(authorToUpdate);
+        notificationController.sendNotification("Author updated: " + authorToUpdate.getSurname());
         return authorMapper.mapAuthorToDTO(authorToUpdate);
     }
 
@@ -89,21 +92,19 @@ public class AuthorService {
     public AuthorDTO partialUpdateAuthorService(Long id, AuthorDTO authorDTO) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException(id));
         log.info("Author before update: {}", author);
-
         authorMapperForPartialUpdates.map(authorDTO, author);
-
         log.info("Author after update: {}", author);
-
+        notificationController.sendNotification("Author updated: " + author.getSurname());
         return authorMapper.mapAuthorToDTO(author);
     }
 
-    public List<Book> getBooksByAuthorId(Long authorId) {
+    public List<Book> getBooksByAuthorIdService(Long authorId) {
         return authorRepository.findByIdWithBooks(authorId)
                 .orElseThrow(() -> new AuthorNotFoundException(authorId))
                 .getBooks();
     }
 
-    public Long getAuthorsIdBySurname(String surname) {
+    public Long getAuthorsIdBySurnameService(String surname) {
         return authorRepository.findBySurnameIgnoreCase(surname)
                 .map(Author::getId)
                 .orElseThrow(() -> new AuthorNotFoundException("No author found with surname containing: " + surname));

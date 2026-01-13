@@ -21,15 +21,13 @@ public class MqttService {
     @PostConstruct
     public void connect() {
         try {
-            String broker = "tcp://broker.emqx.io:1883";
+            String broker = "ssl://broker.emqx.io:8883";
             String clientId = "springboot_mqtt_client" + UUID.randomUUID();
             client = new MqttClient(broker, clientId);
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
-
             client.connect(options);
-
             client.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
@@ -40,7 +38,6 @@ public class MqttService {
                 public void messageArrived(String topic, MqttMessage message) {
                     String payload = new String(message.getPayload());
                     System.out.println("MQTT received: " + payload);
-
                     if (messageHandler != null) {
                         messageHandler.accept(payload);
                     }
@@ -50,12 +47,11 @@ public class MqttService {
                 public void deliveryComplete(IMqttDeliveryToken token) {
                 }
             });
-
             client.subscribe(topic, 1);
             System.out.println("MQTT connected and subscribed to topic: " + topic);
 
         } catch (MqttException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to connect to MQTT broker", e);
         }
     }
 
@@ -67,7 +63,7 @@ public class MqttService {
                 client.publish(topic, message);
             }
         } catch (MqttException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to publish MQTT message", e);
         }
     }
 
@@ -79,7 +75,7 @@ public class MqttService {
                 client.close();
             }
         } catch (MqttException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Failed to disconnect from MQTT broker", e);
         }
     }
 }

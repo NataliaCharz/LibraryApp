@@ -80,6 +80,7 @@ public class BookService {
         Book bookToDelete = bookById.get();
         this.bookRepository.delete(bookToDelete);
         notificationController.sendNotification("Book removed: " + bookToDelete.getTitle());
+        mqttService.publish("Book removed: " + bookToDelete.getTitle());
         log.info("Book's been successfully removed");
     }
 
@@ -101,6 +102,7 @@ public class BookService {
         }
         this.bookRepository.save(bookToUpdate);
         notificationController.sendNotification("Book updated: " + bookToUpdate.getTitle());
+        mqttService.publish("Book updated: " + bookToUpdate.getTitle());
         log.info("Book's been successfully updated");
         return bookMapper.mapBookToDto(bookToUpdate);
     }

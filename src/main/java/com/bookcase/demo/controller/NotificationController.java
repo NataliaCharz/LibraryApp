@@ -21,10 +21,8 @@ public class NotificationController {
     public SseEmitter streamNotifications() {
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
         emitters.add(emitter);
-
         emitter.onCompletion(() -> emitters.remove(emitter));
         emitter.onTimeout(() -> emitters.remove(emitter));
-
         return emitter;
     }
 

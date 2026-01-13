@@ -26,6 +26,10 @@ public class ContactMessageController {
     @DeleteMapping("/delete/{id}")
     public void deleteMessage(@PathVariable Long id) {
         contactMessageService.deleteMessageById(id);
+    }
 
+    @PutMapping("/{id}")
+    public ContactMessage updateMessage(@PathVariable Long id, @RequestBody ContactMessage updatedMessage) {
+        return contactMessageService.updateMessageService(id, updatedMessage.getName(), updatedMessage.getEmail(), updatedMessage.getMessage());
     }
 }

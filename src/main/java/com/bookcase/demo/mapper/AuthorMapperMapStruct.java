@@ -40,16 +40,6 @@ public interface AuthorMapperMapStruct {
         }
     }
 
-//    @AfterMapping
-//    default void mapBooksToDto(Author author, @MappingTarget AuthorDTO authorDTO, @Context BookMapper bookMapper) {
-//        if (author.getBooks() != null) {
-//            List<BookDTO> bookDTOs = author.getBooks().stream()
-//                    .map(bookMapper::mapBookToDto)
-//                    .collect(Collectors.toList());
-//            authorDTO.setBookDTOS(bookDTOs);
-//        }
-//    }
-
 }
 
 

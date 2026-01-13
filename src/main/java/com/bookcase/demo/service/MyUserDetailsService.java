@@ -18,7 +18,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository
                 .findUserByUserName(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
     public AppUser loadAppUserByUsername(String username) throws UsernameNotFoundException {
