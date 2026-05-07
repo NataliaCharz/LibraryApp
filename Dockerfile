@@ -6,8 +6,8 @@ COPY gradle gradle
 COPY settings.gradle settings.gradle
 COPY src src
 
-RUN ./gradlew build
-RUN ls
+RUN chmod +x gradlew
+RUN ./gradlew clean build -x test
 RUN java -Djarmode=layertools --enable-preview -jar build/libs/library-0.0.1-SNAPSHOT.jar extract
 
 FROM eclipse-temurin:21-jre-alpine
@@ -19,15 +19,7 @@ COPY --from=builder app/application/ ./
 EXPOSE 8090
 ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
 
-#COPY gradlew gradlew
-#COPY gradle gradle
-#COPY build.gradle build.gradle
-#COPY settings.gradle settings.gradle
-#COPY src src
-#
-#RUN chmod +x gradlew
-#RUN ./gradlew clean build -x test
-#
+
 #RUN java -Djarmode=layertools -jar build/libs/library-0.0.1-SNAPSHOT.jar extract
 #
 #FROM eclipse-temurin:21-jre-alpine
