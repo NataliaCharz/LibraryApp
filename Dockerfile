@@ -1,6 +1,5 @@
 FROM gradle:8.9.0-jdk21-alpine AS builder
 WORKDIR /app
-COPY .gradle .gradle
 COPY gradlew gradlew
 COPY build.gradle build.gradle
 COPY gradle gradle
