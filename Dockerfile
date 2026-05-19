@@ -1,7 +1,6 @@
 FROM gradle:8.9.0-jdk21-alpine AS builder
 WORKDIR /app
 COPY gradlew gradlew
-COPY build.gradle build.gradle
 COPY gradle gradle
 COPY settings.gradle settings.gradle
 COPY src src

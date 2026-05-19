@@ -8,7 +8,10 @@ services:
       - 5432:5432
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
+#volumen tymu bindmount - nginx
     environment:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_USER=admin
       - POSTGRES_DB=library
+
+#połaczenie wew z db
