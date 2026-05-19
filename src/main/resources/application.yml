@@ -36,3 +36,11 @@ library:
   path: "/search.json"
   fields: "title, author_name"
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
