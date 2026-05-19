@@ -5,8 +5,8 @@ COPY gradle gradle
 COPY settings.gradle settings.gradle
 COPY src src
 
-RUN chmod +x gradlew
-RUN ./gradlew clean build -x test
+#RUN chmod +x gradlew
+#RUN ./gradlew clean build -x test
 RUN java -Djarmode=layertools --enable-preview -jar build/libs/library-0.0.1-SNAPSHOT.jar extract
 
 FROM eclipse-temurin:21-jre-alpine
