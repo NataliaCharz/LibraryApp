@@ -18,6 +18,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "APP_USER")
 public class AppUser implements UserDetails {
 
     @Id
