@@ -21,7 +21,7 @@ spring:
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/library"
+    url: "jdbc:postgresql://postgres:5432/library"
 
 logging:
   level:
