@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  ssl:
+    enabled:
+     false
+  forward-headers-strategy:
+   framework
+
+spring:
+  application:
+    name: "bookcase"
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: DEBUG
+      springframework:
+        web: INFO
+        security: TRACE
+        jdbc:
+          datasource.init.ScriptUtils: DEBUG
+        boot:
+          autoconfigure.sql.init: DEBUG
+
+library:
+  baseUrl: "https://openlibrary.org"
+  path: "/search.json"
+  fields: "title, author_name"
+
