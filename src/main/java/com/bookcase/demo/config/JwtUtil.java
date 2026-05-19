@@ -12,7 +12,9 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key key = Keys.hmacShaKeyFor(
+            "12345678901234567890123456789012".getBytes()
+    );
     private final long EXPIRATION = 1000 * 60 * 60;
 
     public String generateToken(String username, String role) {
@@ -21,7 +23,7 @@ public class JwtUtil {
                 .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(SignatureAlgorithm.HS256, key)
+                .signWith(key)
                 .compact();
     }
 

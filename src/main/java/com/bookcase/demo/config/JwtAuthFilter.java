@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @RequiredArgsConstructor
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -43,6 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(token);
             } catch (Exception e) {
+                System.out.println("JWT ERROR: " + e.getMessage());
             }
         }
 
