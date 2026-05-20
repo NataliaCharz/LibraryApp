@@ -1,5 +1,6 @@
 package com.bookcase.demo.config;
 
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -9,10 +10,11 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 @Configuration
+@EnableCaching
 public class CacheConfig {
 
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+    public RedisCacheManager cacheManager(RedisConnectionFactory factory) {
 
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeValuesWith(
@@ -21,7 +23,7 @@ public class CacheConfig {
                         )
                 );
 
-        return RedisCacheManager.builder(connectionFactory)
+        return RedisCacheManager.builder(factory)
                 .cacheDefaults(config)
                 .build();
     }
