@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @ToString
-public class LibraryDTO {
+public class LibraryDTO implements Serializable {
     @JsonProperty("docs")
     List<LibraryTitle> bookTitlelist;
 
