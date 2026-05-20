@@ -25,16 +25,11 @@ spring:
 
 logging:
   level:
-    org:
-      hibernate:
-        sql: DEBUG
-      springframework:
-        web: INFO
-        security: TRACE
-        jdbc:
-          datasource.init.ScriptUtils: DEBUG
-        boot:
-          autoconfigure.sql.init: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: TRACE
+    org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG
+    org.springframework.boot.autoconfigure.sql.init: DEBUG
 
 library:
   baseUrl: "https://openlibrary.org"
