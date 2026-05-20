@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @ToString
 public class LibraryDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
     @JsonProperty("docs")
     List<LibraryTitle> bookTitlelist;
 
