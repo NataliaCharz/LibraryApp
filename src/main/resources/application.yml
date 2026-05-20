@@ -8,8 +8,6 @@ server:
 spring:
   application:
     name: "bookcase"
-  profiles:
-    active: dev
   jpa:
     hibernate:
       ddl-auto: create
