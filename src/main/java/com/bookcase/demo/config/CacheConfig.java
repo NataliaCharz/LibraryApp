@@ -16,12 +16,16 @@ public class CacheConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 
-        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(
-                                new GenericJackson2JsonRedisSerializer()
-                        )
+        RedisSerializationContext.SerializationPair<Object> jsonSerializer =
+                RedisSerializationContext.SerializationPair.fromSerializer(
+                        new GenericJackson2JsonRedisSerializer()
                 );
+
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(
+                        new org.springframework.data.redis.serializer.StringRedisSerializer()
+                ))
+                .serializeValuesWith(jsonSerializer);
 
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(config)
