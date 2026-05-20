@@ -4,6 +4,7 @@ import com.bookcase.demo.config.LibraryProperties;
 import com.bookcase.demo.dto.LibraryDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
@@ -19,19 +20,19 @@ public class LibraryService {
     private final RestClient restClient;
     private final LibraryProperties libraryProperties;
 
+    @Cacheable(value = "libraryCache", key = "#author.toLowerCase()")
     public LibraryDTO getAllWrittenBooksByAuthor(String author) {
+        log.info("Fetching books for author from API: {}", author);
+
         String url = UriComponentsBuilder.fromUriString(libraryProperties.getPath())
                 .queryParam("author", author)
                 .build()
                 .toUriString();
 
-        LibraryDTO libraryDTO = restClient.get()
+        return restClient.get()
                 .uri(url)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .toEntity(LibraryDTO.class)
-                .getBody();
-
-        return libraryDTO;
+                .body(LibraryDTO.class);
     }
 }
