@@ -6,13 +6,6 @@ RUN gradle build -x test
 
 FROM eclipse-temurin:21-jre-alpine
 
-WORKDIR /apps
-
-COPY --from=builder app/dependencies/ ./
-COPY --from=builder app/snapshot-dependencies/ ./
-COPY --from=builder app/spring-boot-loader/ ./
-COPY --from=builder app/application/ ./
-
 WORKDIR /app
 
 COPY --from=builder /app/build/libs/*.jar app.jar
