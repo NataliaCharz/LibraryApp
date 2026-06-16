@@ -32,6 +32,14 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/realms/bookcase
 
+keycloak:
+  server-url: http://keycloak:8080
+  realm: bookcase
+  client-id: bookcase-app
+  client-secret: change-me
+  admin-username: admin
+  admin-password: admin
+
 logging:
   level:
     org.hibernate.SQL: DEBUG

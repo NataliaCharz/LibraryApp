@@ -13,3 +13,16 @@ spring:
   sql:
     init:
       mode: always
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/bookcase
+
+keycloak:
+  server-url: http://localhost:8180
+  realm: bookcase
+  client-id: bookcase-app
+  client-secret: change-me
+  admin-username: admin
+  admin-password: admin

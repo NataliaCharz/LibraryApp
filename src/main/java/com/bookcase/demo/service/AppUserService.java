@@ -17,6 +17,21 @@ public class AppUserService {
     private final UserRepository userRepository;
     private final NotificationController notificationController;
 
+    public AppUser resolveOrCreateUser(String keycloakId, String username) {
+        return userRepository.findByKeycloakId(keycloakId)
+                .orElseGet(() -> {
+                    AppUser user = new AppUser();
+                    user.setKeycloakId(keycloakId);
+                    user.setUserName(username);
+                    return userRepository.save(user);
+                });
+    }
+
+    public AppUser findByKeycloakId(String keycloakId) {
+        return userRepository.findByKeycloakId(keycloakId)
+                .orElseThrow(() -> new UserNotFoundException(0L));
+    }
+
     public Set<Book> getUserBooks(Long id) {
         return userRepository.findByIdWithBooks(id)
                 .map(AppUser::getUserBooks)

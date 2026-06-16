@@ -17,6 +17,8 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findAppUserById(Long id);
 
+    Optional<AppUser> findByKeycloakId(String keycloakId);
+
     boolean existsByUserName(String username);
 
     @Query("SELECT u FROM AppUser u LEFT JOIN FETCH u.userBooks WHERE u.id = :userId")

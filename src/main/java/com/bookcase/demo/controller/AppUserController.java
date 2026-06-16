@@ -8,9 +8,11 @@ import com.bookcase.demo.service.BookService;
 import com.bookcase.demo.service.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/user")
@@ -22,73 +24,76 @@ public class AppUserController {
     private final BookService bookService;
     private final WishlistService wishlistService;
 
+    private AppUser resolveUser(Jwt jwt) {
+        return appUserService.resolveOrCreateUser(
+                jwt.getSubject(),
+                jwt.getClaimAsString("preferred_username")
+        );
+    }
+
     @GetMapping("/books")
-    public Set<BookDTO> getUserBooks(@AuthenticationPrincipal AppUser user) {
-        return appUserService.getUserBooks(user.getId())
+    public Set<BookDTO> getUserBooks(@AuthenticationPrincipal Jwt jwt) {
+        return appUserService.getUserBooks(resolveUser(jwt).getId())
                 .stream().map(bookMapper::mapBookToDto)
-                .collect(java.util.stream.Collectors.toSet());
+                .collect(Collectors.toSet());
     }
 
     @PostMapping("/books/add/{bookId}")
-    public void addBookToUserBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
-        appUserService.addUserBook(user.getId(),
-                bookService.getBookByIdService(bookId));
+    public void addBookToUserBooks(@AuthenticationPrincipal Jwt jwt, @PathVariable Long bookId) {
+        appUserService.addUserBook(resolveUser(jwt).getId(), bookService.getBookByIdService(bookId));
     }
 
     @DeleteMapping("/books/delete/{bookId}")
-    public void deleteBookFromUserBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
-        appUserService.deleteUserBook(user.getId(), bookId);
+    public void deleteBookFromUserBooks(@AuthenticationPrincipal Jwt jwt, @PathVariable Long bookId) {
+        appUserService.deleteUserBook(resolveUser(jwt).getId(), bookId);
     }
 
     @GetMapping("/books/favorite")
-    public Set<BookDTO> getUserFavoriteBooks(@AuthenticationPrincipal AppUser user) {
-        return appUserService.getUserFavoriteBooks(user.getId())
+    public Set<BookDTO> getUserFavoriteBooks(@AuthenticationPrincipal Jwt jwt) {
+        return appUserService.getUserFavoriteBooks(resolveUser(jwt).getId())
                 .stream().map(bookMapper::mapBookToDto)
-                .collect(java.util.stream.Collectors.toSet());
+                .collect(Collectors.toSet());
     }
 
     @PostMapping("/books/favorite/add/{bookId}")
-    public void addBookToUserFavoriteBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
-        appUserService.addUserFavoriteBook(user.getId(),
-                bookService.getBookByIdService(bookId));
+    public void addBookToUserFavoriteBooks(@AuthenticationPrincipal Jwt jwt, @PathVariable Long bookId) {
+        appUserService.addUserFavoriteBook(resolveUser(jwt).getId(), bookService.getBookByIdService(bookId));
     }
 
     @DeleteMapping("/books/favorite/delete/{bookId}")
-    public void deleteBookFromUserFavoriteBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
-        appUserService.deleteUserFavoriteBook(user.getId(), bookId);
+    public void deleteBookFromUserFavoriteBooks(@AuthenticationPrincipal Jwt jwt, @PathVariable Long bookId) {
+        appUserService.deleteUserFavoriteBook(resolveUser(jwt).getId(), bookId);
     }
 
     @GetMapping("/books/wishlist")
-    public Set<BookDTO> getUserWishlistBooks(@AuthenticationPrincipal AppUser user) {
-        return appUserService.getUserWishListBooks(user.getId())
+    public Set<BookDTO> getUserWishlistBooks(@AuthenticationPrincipal Jwt jwt) {
+        return appUserService.getUserWishListBooks(resolveUser(jwt).getId())
                 .stream().map(bookMapper::mapBookToDto)
-                .collect(java.util.stream.Collectors.toSet());
+                .collect(Collectors.toSet());
     }
 
     @PostMapping("/books/wishlist/add/{bookId}")
-    public void addBookToUserWishlistBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
-        appUserService.addUserWishListBook(user.getId(),
-                bookService.getBookByIdService(bookId));
+    public void addBookToUserWishlistBooks(@AuthenticationPrincipal Jwt jwt, @PathVariable Long bookId) {
+        appUserService.addUserWishListBook(resolveUser(jwt).getId(), bookService.getBookByIdService(bookId));
     }
 
     @DeleteMapping("/books/wishlist/delete/{bookId}")
-    public void deleteBookFromUserWishlistBooks(@AuthenticationPrincipal AppUser user, @PathVariable Long bookId) {
-        appUserService.deleteUserWishListBook(user.getId(), bookId);
+    public void deleteBookFromUserWishlistBooks(@AuthenticationPrincipal Jwt jwt, @PathVariable Long bookId) {
+        appUserService.deleteUserWishListBook(resolveUser(jwt).getId(), bookId);
     }
 
     @GetMapping("/books/wishlist/read-status")
-    public Boolean getReadStatus(@RequestParam AppUser user, @RequestParam Long bookId) {
-        return wishlistService.checkIfRead(user.getId(), bookId);
+    public Boolean getReadStatus(@AuthenticationPrincipal Jwt jwt, @RequestParam Long bookId) {
+        return wishlistService.checkIfRead(resolveUser(jwt).getId(), bookId);
     }
 
     @PostMapping("/books/wishlist/mark-read")
-    public void markAsRead(@RequestParam AppUser user, @RequestParam Long bookId) {
-        wishlistService.markAsRead(user.getId(), bookId);
+    public void markAsRead(@AuthenticationPrincipal Jwt jwt, @RequestParam Long bookId) {
+        wishlistService.markAsRead(resolveUser(jwt).getId(), bookId);
     }
 
     @PostMapping("/books/wishlist/mark-unread")
-    public void markAsUnread(@RequestParam AppUser user, @RequestParam Long bookId) {
-        wishlistService.markAsUnread(user.getId(), bookId);
+    public void markAsUnread(@AuthenticationPrincipal Jwt jwt, @RequestParam Long bookId) {
+        wishlistService.markAsUnread(resolveUser(jwt).getId(), bookId);
     }
-
 }
