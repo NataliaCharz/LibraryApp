@@ -23,14 +23,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final MyUserDetailsService userDetailsService;
-    private final JwtUtil jwtUtil;
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+//    private final MyUserDetailsService userDetailsService;
+//    private final JwtUtil jwtUtil;
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(
+//            AuthenticationConfiguration config) throws Exception {
+//        return config.getAuthenticationManager();
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -73,7 +73,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtAuthFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);;
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt());
         return http.build();
     }
 }
