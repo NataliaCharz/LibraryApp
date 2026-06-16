@@ -30,7 +30,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/bookcase
+          jwk-set-uri: http://keycloak:8080/realms/bookcase/protocol/openid-connect/certs
 
 keycloak:
   server-url: http://keycloak:8080
