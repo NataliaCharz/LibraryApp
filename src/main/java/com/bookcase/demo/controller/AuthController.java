@@ -2,7 +2,6 @@ package com.bookcase.demo.controller;
 
 import com.bookcase.demo.dto.LoginRequest;
 import com.bookcase.demo.service.AppUserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -85,6 +84,8 @@ public class AuthController {
                     .retrieve()
                     .toBodilessEntity();
 
+            assignUserRole(adminToken, body.getUsername());
+
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "User created"));
         } catch (Exception e) {
             String msg = e.getMessage() != null && e.getMessage().contains("409")
@@ -92,6 +93,41 @@ public class AuthController {
                     : "Registration failed";
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
         }
+    }
+
+    private void assignUserRole(String adminToken, String username) {
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> users = keycloakClient.get()
+                .uri(keycloakServerUrl + "/admin/realms/" + realm + "/users?username=" + username + "&exact=true")
+                .header("Authorization", "Bearer " + adminToken)
+                .retrieve()
+                .body(List.class);
+
+        if (users == null || users.isEmpty()) return;
+        String userId = (String) users.get(0).get("id");
+
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> realmRoles = keycloakClient.get()
+                .uri(keycloakServerUrl + "/admin/realms/" + realm + "/roles")
+                .header("Authorization", "Bearer " + adminToken)
+                .retrieve()
+                .body(List.class);
+
+        if (realmRoles == null) return;
+        Map<String, Object> userRole = realmRoles.stream()
+                .filter(r -> "USER".equals(r.get("name")))
+                .findFirst()
+                .orElse(null);
+
+        if (userRole == null) return;
+
+        keycloakClient.post()
+                .uri(keycloakServerUrl + "/admin/realms/" + realm + "/users/" + userId + "/role-mappings/realm")
+                .header("Authorization", "Bearer " + adminToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(List.of(userRole))
+                .retrieve()
+                .toBodilessEntity();
     }
 
     private String getAdminToken() {
