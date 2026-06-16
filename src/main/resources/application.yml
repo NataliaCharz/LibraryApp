@@ -35,8 +35,6 @@ spring:
 keycloak:
   server-url: http://keycloak:8080
   realm: bookcase
-  client-id: bookcase-app
-  client-secret: change-me
   admin-username: admin
   admin-password: admin
 

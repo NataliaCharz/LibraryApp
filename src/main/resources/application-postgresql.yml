@@ -20,9 +20,7 @@ spring:
           issuer-uri: http://localhost:8180/realms/bookcase
 
 keycloak:
-  server-url: http://localhost:8180
+  server-url: http://localhost:8081
   realm: bookcase
-  client-id: bookcase-app
-  client-secret: change-me
   admin-username: admin
   admin-password: admin
